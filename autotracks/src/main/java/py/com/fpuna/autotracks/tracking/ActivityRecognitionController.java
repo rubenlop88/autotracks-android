@@ -1,4 +1,4 @@
-package py.com.fpuna.autotracks.service;
+package py.com.fpuna.autotracks.tracking;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -8,7 +8,6 @@ import android.preference.PreferenceManager;
 
 import com.google.android.gms.location.ActivityRecognitionClient;
 import py.com.fpuna.autotracks.Constants;
-import py.com.fpuna.autotracks.service.ActivityRecognitionService;
 
 public class ActivityRecognitionController {
 

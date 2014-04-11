@@ -2,11 +2,13 @@ package py.com.fpuna.autotracks.model;
 
 import java.util.List;
 
+import nl.qbusict.cupboard.annotation.Ignore;
+
 public class Ruta {
 
     private Long _id;
     private long fecha;
-    private transient List<Localizacion> localizaciones;
+    @Ignore private List<Localizacion> localizaciones;
 
     public Ruta() {
     }

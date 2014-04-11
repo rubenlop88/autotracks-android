@@ -1,4 +1,4 @@
-package py.com.fpuna.autotracks.service;
+package py.com.fpuna.autotracks.tracking;
 
 import android.app.IntentService;
 import android.content.Context;
@@ -15,8 +15,8 @@ import com.google.android.gms.location.DetectedActivity;
 import com.google.android.gms.location.LocationClient;
 import py.com.fpuna.autotracks.Constants;
 
-import static py.com.fpuna.autotracks.service.ActivityRecognitionController.LONG_INTERVAL;
-import static py.com.fpuna.autotracks.service.ActivityRecognitionController.SHORT_INTERVAL;
+import static py.com.fpuna.autotracks.tracking.ActivityRecognitionController.LONG_INTERVAL;
+import static py.com.fpuna.autotracks.tracking.ActivityRecognitionController.SHORT_INTERVAL;
 
 public class ActivityRecognitionService extends IntentService implements
         GooglePlayServicesClient.ConnectionCallbacks,
@@ -74,7 +74,7 @@ public class ActivityRecognitionService extends IntentService implements
         if (isActivityRecognitionUpdatesStarted()) {
             if (ActivityRecognitionResult.hasResult(intent)) {
                 ActivityRecognitionResult result = ActivityRecognitionResult.extractResult(intent);
-                boolean moving = true; // TODO isMoving(result);
+                boolean moving = isMoving(result);
                 setMoving(moving);
                 if (moving) {
                     if (!isLocationUpdatesStarted()) {

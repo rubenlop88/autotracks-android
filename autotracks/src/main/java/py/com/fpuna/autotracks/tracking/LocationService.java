@@ -1,10 +1,9 @@
-package py.com.fpuna.autotracks.service;
+package py.com.fpuna.autotracks.tracking;
 
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Point;
 import android.location.Location;
 import android.preference.PreferenceManager;
 
@@ -36,7 +35,9 @@ public class LocationService extends IntentService {
         if (isActivityRecognitionUpdatesStarted()) {
             if (isLocationUpdatesStarted()) {
                 Location location =  intent.getExtras().getParcelable(LocationClient.KEY_LOCATION_CHANGED);
-                saveLocation(location);
+                if (location != null) {
+                    saveLocation(location);
+                }
             }
         }
     }
@@ -50,12 +51,10 @@ public class LocationService extends IntentService {
     }
 
     private void saveLocation(Location location) {
-        if (location != null) {
-            String rutaId = mPreferences.getString(Constants.KEY_CURRENT_TRACK_ID, null);
-            if (rutaId != null) {
-                Localizacion localizacion = new Localizacion(location, Long.valueOf(rutaId));
-                cupboard().withContext(mContext).put(Localizaciones.CONTENT_URI, localizacion);
-            }
+        String rutaId = mPreferences.getString(Constants.KEY_CURRENT_TRACK_ID, null);
+        if (rutaId != null) {
+            Localizacion localizacion = new Localizacion(location, Long.valueOf(rutaId));
+            cupboard().withContext(mContext).put(Localizaciones.CONTENT_URI, localizacion);
         }
     }
 

@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.ViewTreeObserver;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import py.com.fpuna.autotracks.model.Localizacion;
+import py.com.fpuna.autotracks.model.Resultado;
 import py.com.fpuna.autotracks.model.Ruta;
 import py.com.fpuna.autotracks.provider.AutotracksContract.Localizaciones;
 import py.com.fpuna.autotracks.provider.AutotracksContract.Rutas;
@@ -84,26 +86,39 @@ public class RutaDetailFragment extends SupportMapFragment {
         getActivity().getContentResolver().delete(uri, null, null);
     }
 
-    public class EnviarRutaTask extends AsyncTask<String, Void, Void> {
+    public class EnviarRutaTask extends AsyncTask<String, Void, Resultado> {
 
         @Override
-        protected Void doInBackground(String... params) {
-            RestAdapter adapter = new RestAdapter.Builder().setEndpoint(WebService.ENDPOINT).build();
+        protected Resultado doInBackground(String... params) {
+            RestAdapter adapter = new RestAdapter.Builder().setEndpoint(WebService.ENDPOINT).setLogLevel(RestAdapter.LogLevel.FULL).build();
             WebService webService = adapter.create(WebService.class);
-            webService.guardarRuta(getRuta());
-            return null;
+            Resultado resultado = webService.guardarRuta(getRuta());
+            return resultado;
+        }
+
+        @Override
+        protected void onPostExecute(Resultado resultado) {
+            if (resultado != null) {
+                if (resultado.isExitoso()) {
+                    Toast.makeText(getActivity(), "Ruta guardada!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Error: " + resultado.getMensaje(), Toast.LENGTH_SHORT).show();
+                }
+            }
         }
 
         private Ruta getRuta() {
             Uri uri = Rutas.buildUri(rutaId);
             Ruta ruta = cupboard().withContext(getActivity()).get(uri, Ruta.class);
             ruta.setLocalizaciones(getLocalizaciones());
+            ruta.setId(null); // para que Retrofit no envie en el JSON
             return ruta;
         }
 
         private List<Localizacion> getLocalizaciones() {
             List<Localizacion> localizaciones = new ArrayList<Localizacion>();
             for (Localizacion localizacion : getLocalizacionesIterable()) {
+                localizacion.setId(null);  // para que Retrofit no envie en el JSON
                 localizaciones.add(localizacion);
             }
             return localizaciones;

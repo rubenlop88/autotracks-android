@@ -1,4 +1,4 @@
-package py.com.fpuna.autotracks.service;
+package py.com.fpuna.autotracks.tracking;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -55,8 +55,8 @@ public class LocationController {
 
     private void startNewTrack() {
         Ruta ruta = new Ruta(System.currentTimeMillis());
-        Uri trackUri = cupboard().withContext(mContext).put(Rutas.CONTENT_URI, ruta);
-        mPreferences.edit().putString(Constants.KEY_CURRENT_TRACK_ID, Rutas.getId(trackUri)).commit();
+        Uri uri = cupboard().withContext(mContext).put(Rutas.CONTENT_URI, ruta);
+        mPreferences.edit().putString(Constants.KEY_CURRENT_TRACK_ID, Rutas.getId(uri)).commit();
     }
 
     private void endCurrentTrack() {

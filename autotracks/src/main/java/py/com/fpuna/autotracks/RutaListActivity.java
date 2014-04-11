@@ -17,10 +17,10 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.ActivityRecognitionClient;
 import com.google.android.gms.location.LocationClient;
 
-import py.com.fpuna.autotracks.service.ActivityRecognitionController;
-import py.com.fpuna.autotracks.service.LocationController;
+import py.com.fpuna.autotracks.tracking.ActivityRecognitionController;
+import py.com.fpuna.autotracks.tracking.LocationController;
 
-import static py.com.fpuna.autotracks.service.ActivityRecognitionController.SHORT_INTERVAL;
+import static py.com.fpuna.autotracks.tracking.ActivityRecognitionController.SHORT_INTERVAL;
 
 public class RutaListActivity extends ActionBarActivity implements
         RutaListFragment.Callbacks,

@@ -48,11 +48,11 @@
         </activity>
 
         <service
-            android:name=".service.LocationService"
+            android:name=".tracking.LocationService"
             android:exported="false" />
 
         <service
-            android:name="py.com.fpuna.autotracks.service.ActivityRecognitionService"
+            android:name="py.com.fpuna.autotracks.tracking.ActivityRecognitionService"
             android:exported="false"/>
 
         <provider

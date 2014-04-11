@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import nl.qbusict.cupboard.CupboardBuilder;
+import nl.qbusict.cupboard.CupboardFactory;
 import py.com.fpuna.autotracks.model.Localizacion;
 import py.com.fpuna.autotracks.model.Ruta;
 
@@ -18,8 +20,9 @@ public class AutotracksDatabase extends SQLiteOpenHelper {
 	private static final int DATABASE_VERSION = VER_1_0;
 
     static {
-        cupboard().register(Ruta.class);
+        CupboardFactory.setCupboard(new CupboardBuilder().useAnnotations().build());
         cupboard().register(Localizacion.class);
+        cupboard().register(Ruta.class);
     }
 
 	public AutotracksDatabase(Context context) {
