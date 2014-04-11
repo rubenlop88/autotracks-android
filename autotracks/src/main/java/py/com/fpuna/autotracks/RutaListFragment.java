@@ -19,8 +19,9 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import py.com.fpuna.autotracks.provider.AutotracksContract.*;
-import py.com.fpuna.autotracks.model.*;
+import py.com.fpuna.autotracks.model.Ruta;
+import py.com.fpuna.autotracks.provider.AutotracksContract.Localizaciones;
+import py.com.fpuna.autotracks.provider.AutotracksContract.Rutas;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
@@ -85,7 +86,7 @@ public class RutaListFragment extends ListFragment implements LoaderManager.Load
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-       if (!(activity instanceof Callbacks)) {
+        if (!(activity instanceof Callbacks)) {
             throw new IllegalStateException("Activity must implement fragment's callbacks.");
         }
         mCallbacks = (Callbacks) activity;
@@ -113,7 +114,7 @@ public class RutaListFragment extends ListFragment implements LoaderManager.Load
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(getActivity(),  Rutas.CONTENT_URI, null, null, null, null);
+        return new CursorLoader(getActivity(), Rutas.CONTENT_URI, null, null, null, null);
     }
 
     @Override

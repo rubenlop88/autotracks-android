@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.google.android.gms.location.ActivityRecognitionClient;
+
 import py.com.fpuna.autotracks.Constants;
 
 public class ActivityRecognitionController {

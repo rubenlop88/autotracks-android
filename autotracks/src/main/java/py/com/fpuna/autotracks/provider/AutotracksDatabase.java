@@ -13,11 +13,11 @@ import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 public class AutotracksDatabase extends SQLiteOpenHelper {
 
-	private static final String DATABASE_NAME = "autotracks.db";
+    private static final String DATABASE_NAME = "autotracks.db";
 
-	private static final int VER_1_0 = 1;
+    private static final int VER_1_0 = 1;
 
-	private static final int DATABASE_VERSION = VER_1_0;
+    private static final int DATABASE_VERSION = VER_1_0;
 
     static {
         CupboardFactory.setCupboard(new CupboardBuilder().useAnnotations().build());
@@ -25,18 +25,18 @@ public class AutotracksDatabase extends SQLiteOpenHelper {
         cupboard().register(Ruta.class);
     }
 
-	public AutotracksDatabase(Context context) {
-		super(context, DATABASE_NAME, null, DATABASE_VERSION);
-	}
+    public AutotracksDatabase(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
 
-	@Override
-	public void onCreate(SQLiteDatabase db) {
+    @Override
+    public void onCreate(SQLiteDatabase db) {
         cupboard().withDatabase(db).createTables();
-	}
+    }
 
-	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         cupboard().withDatabase(db).upgradeTables();
-	}
+    }
 
 }

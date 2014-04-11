@@ -13,6 +13,7 @@ import com.google.android.gms.location.ActivityRecognitionClient;
 import com.google.android.gms.location.ActivityRecognitionResult;
 import com.google.android.gms.location.DetectedActivity;
 import com.google.android.gms.location.LocationClient;
+
 import py.com.fpuna.autotracks.Constants;
 
 import static py.com.fpuna.autotracks.tracking.ActivityRecognitionController.LONG_INTERVAL;
@@ -42,7 +43,7 @@ public class ActivityRecognitionService extends IntentService implements
 
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         mLocationClient = new LocationClient(context, this, this);
-        mLocationController = new LocationController(context,  mLocationClient);
+        mLocationController = new LocationController(context, mLocationClient);
         mActivityRecognitionClient = new ActivityRecognitionClient(context, this, this);
         mActivityRecognitionController = new ActivityRecognitionController(context, mActivityRecognitionClient);
 

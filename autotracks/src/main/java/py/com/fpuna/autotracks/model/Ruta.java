@@ -23,7 +23,7 @@ public class Ruta {
 
     public void setId(Long id) {
         this._id = id;
-    } 
+    }
 
     public long getFecha() {
         return fecha;

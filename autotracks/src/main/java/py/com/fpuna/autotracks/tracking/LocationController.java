@@ -9,9 +9,10 @@ import android.preference.PreferenceManager;
 
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationRequest;
+
 import py.com.fpuna.autotracks.Constants;
 import py.com.fpuna.autotracks.model.Ruta;
-import py.com.fpuna.autotracks.provider.AutotracksContract.*;
+import py.com.fpuna.autotracks.provider.AutotracksContract.Rutas;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
@@ -23,7 +24,7 @@ public class LocationController {
     private SharedPreferences mPreferences;
     private LocationClient mClient;
 
-    public LocationController(Context context,  LocationClient client) {
+    public LocationController(Context context, LocationClient client) {
         this.mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         this.mContext = context;
         this.mClient = client;

@@ -34,7 +34,7 @@ public class RutaDetailActivity extends ActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-             case android.R.id.home:
+            case android.R.id.home:
                 NavUtils.navigateUpTo(this, new Intent(this, RutaListActivity.class));
                 return true;
         }

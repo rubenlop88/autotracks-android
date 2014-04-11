@@ -11,12 +11,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import java.util.ArrayList;
+
 import py.com.fpuna.autotracks.model.Localizacion;
 import py.com.fpuna.autotracks.model.Ruta;
-import py.com.fpuna.autotracks.provider.AutotracksContract.Rutas;
 import py.com.fpuna.autotracks.provider.AutotracksContract.Localizaciones;
-
-import java.util.ArrayList;
+import py.com.fpuna.autotracks.provider.AutotracksContract.Rutas;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 

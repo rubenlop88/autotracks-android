@@ -8,9 +8,10 @@ import android.location.Location;
 import android.preference.PreferenceManager;
 
 import com.google.android.gms.location.LocationClient;
+
 import py.com.fpuna.autotracks.Constants;
 import py.com.fpuna.autotracks.model.Localizacion;
-import py.com.fpuna.autotracks.provider.AutotracksContract.*;
+import py.com.fpuna.autotracks.provider.AutotracksContract.Localizaciones;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
@@ -34,7 +35,7 @@ public class LocationService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (isActivityRecognitionUpdatesStarted()) {
             if (isLocationUpdatesStarted()) {
-                Location location =  intent.getExtras().getParcelable(LocationClient.KEY_LOCATION_CHANGED);
+                Location location = intent.getExtras().getParcelable(LocationClient.KEY_LOCATION_CHANGED);
                 if (location != null) {
                     saveLocation(location);
                 }
