@@ -12,8 +12,8 @@ import py.com.fpuna.autotracks.Constants;
 
 public class ActivityRecognitionController {
 
-    public static final int SHORT_INTERVAL = 30 * 1000;
-    public static final int LONG_INTERVAL = 5 * 60 * 1000;
+    public static final int SHORT_INTERVAL = 10 * 1000;
+    public static final int LONG_INTERVAL = 10 * 60 * 1000;
 
     private Context mContext;
     private SharedPreferences mPreferences;
