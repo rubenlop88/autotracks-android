@@ -12,8 +12,7 @@ import py.com.fpuna.autotracks.Constants;
 
 public class ActivityRecognitionController {
 
-    public static final int SHORT_INTERVAL = 10 * 1000;
-    public static final int LONG_INTERVAL = 10 * 60 * 1000;
+    private static final int INTERVAL_IN_MILLIS = 10 * 1000; // 10 segundos
 
     private Context mContext;
     private SharedPreferences mPreferences;
@@ -25,9 +24,9 @@ public class ActivityRecognitionController {
         this.mClient = client;
     }
 
-    public void startActivityRecognitionUpdates(int interval) {
+    public void startActivityRecognitionUpdates() {
         PendingIntent pendingIntent = getPendingIntent();
-        mClient.requestActivityUpdates(interval, pendingIntent);
+        mClient.requestActivityUpdates(INTERVAL_IN_MILLIS, pendingIntent);
         mPreferences.edit().putBoolean(Constants.KEY_ACTIVITY_UPDATES_STARTED, true).commit();
     }
 

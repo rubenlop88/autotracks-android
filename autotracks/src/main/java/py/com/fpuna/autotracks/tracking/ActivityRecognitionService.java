@@ -16,20 +16,18 @@ import com.google.android.gms.location.LocationClient;
 
 import py.com.fpuna.autotracks.Constants;
 
-import static py.com.fpuna.autotracks.tracking.ActivityRecognitionController.LONG_INTERVAL;
-import static py.com.fpuna.autotracks.tracking.ActivityRecognitionController.SHORT_INTERVAL;
-
 public class ActivityRecognitionService extends IntentService implements
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener {
 
     private static final String KEY_WAS_MOVING = "was_moving";
+    private static final String KEY_DETECTION_TIME = "detection_time";
+    public static final int MIN_ELAPSED_TIME_MILLIS = 10 * 60 * 1000; // 10 minutos
 
     private SharedPreferences mPreferences;
     private LocationClient mLocationClient;
     private LocationController mLocationController;
     private ActivityRecognitionClient mActivityRecognitionClient;
-    private ActivityRecognitionController mActivityRecognitionController;
 
     public ActivityRecognitionService() {
         super("ActivityRecognitionService");
@@ -45,7 +43,6 @@ public class ActivityRecognitionService extends IntentService implements
         mLocationClient = new LocationClient(context, this, this);
         mLocationController = new LocationController(context, mLocationClient);
         mActivityRecognitionClient = new ActivityRecognitionClient(context, this, this);
-        mActivityRecognitionController = new ActivityRecognitionController(context, mActivityRecognitionClient);
 
         mLocationClient.connect();
         mActivityRecognitionClient.connect();
@@ -80,14 +77,10 @@ public class ActivityRecognitionService extends IntentService implements
                 if (moving) {
                     if (!isLocationUpdatesStarted()) {
                         mLocationController.startLocationUpdates();
-                        mActivityRecognitionController.stopActivityRecognitionUpdates();
-                        mActivityRecognitionController.startActivityRecognitionUpdates(LONG_INTERVAL);
                     }
                 } else {
                     if (isLocationUpdatesStarted()) {
                         mLocationController.stopLocationUpdates();
-                        mActivityRecognitionController.stopActivityRecognitionUpdates();
-                        mActivityRecognitionController.startActivityRecognitionUpdates(SHORT_INTERVAL);
                     }
                 }
             }
@@ -95,6 +88,14 @@ public class ActivityRecognitionService extends IntentService implements
     }
 
     private boolean isMoving(ActivityRecognitionResult result) {
+        long currentTime = System.currentTimeMillis();
+        if (wasMoving()) {
+            long lastDetectionTime = getDetectionTimeMillis();
+            long elapsedTime = currentTime - lastDetectionTime;
+            if (elapsedTime < MIN_ELAPSED_TIME_MILLIS) {
+                return true;
+            }
+        }
         int mostProbableActivity = result.getMostProbableActivity().getType();
         switch (mostProbableActivity) {
             case DetectedActivity.ON_BICYCLE:
@@ -102,10 +103,19 @@ public class ActivityRecognitionService extends IntentService implements
             case DetectedActivity.STILL:
                 return false;
             case DetectedActivity.IN_VEHICLE:
+                setDetectionTimeMillis(currentTime);
                 return true;
             default:
                 return wasMoving();
         }
+    }
+
+    private long getDetectionTimeMillis() {
+        return mPreferences.getLong(KEY_DETECTION_TIME, -1);
+    }
+
+    private void setDetectionTimeMillis(long time) {
+        mPreferences.edit().putLong(KEY_DETECTION_TIME, time).commit();
     }
 
     private boolean wasMoving() {

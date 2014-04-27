@@ -20,8 +20,6 @@ import com.google.android.gms.location.LocationClient;
 import py.com.fpuna.autotracks.tracking.ActivityRecognitionController;
 import py.com.fpuna.autotracks.tracking.LocationController;
 
-import static py.com.fpuna.autotracks.tracking.ActivityRecognitionController.SHORT_INTERVAL;
-
 public class RutaListActivity extends ActionBarActivity implements
         RutaListFragment.Callbacks,
         GooglePlayServicesClient.ConnectionCallbacks,
@@ -89,7 +87,7 @@ public class RutaListActivity extends ActionBarActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_iniciar:
-                mActivityRecognitionController.startActivityRecognitionUpdates(SHORT_INTERVAL);
+                mActivityRecognitionController.startActivityRecognitionUpdates();
                 supportInvalidateOptionsMenu();
                 return true;
             case R.id.menu_item_detener:

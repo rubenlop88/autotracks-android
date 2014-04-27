@@ -84,6 +84,7 @@ public class RutaDetailFragment extends SupportMapFragment {
     private void eliminarRuta() {
         Uri uri = Rutas.buildUri(rutaId);
         getActivity().getContentResolver().delete(uri, null, null);
+        getActivity().finish();
     }
 
     public class EnviarRutaTask extends AsyncTask<String, Void, Resultado> {
@@ -92,6 +93,7 @@ public class RutaDetailFragment extends SupportMapFragment {
         protected Resultado doInBackground(String... params) {
             RestAdapter adapter = new RestAdapter.Builder().setEndpoint(WebService.ENDPOINT).setLogLevel(RestAdapter.LogLevel.FULL).build();
             WebService webService = adapter.create(WebService.class);
+            // TODO eliminar esta AsyncTask y usa un Callback en su lugar
             Resultado resultado = webService.guardarRuta(getRuta());
             return resultado;
         }
@@ -127,16 +129,19 @@ public class RutaDetailFragment extends SupportMapFragment {
     }
 
     private void initMap() {
-        PolylineOptions polyline = new PolylineOptions();
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (Localizacion localizacion : getLocalizacionesIterable()) {
-            LatLng position = new LatLng(localizacion.getLatitud(), localizacion.getLongitud());
-            getMap().addMarker(new MarkerOptions().position(position));
-            builder.include(position);
-            polyline.add(position);
+        Iterable<Localizacion> localizacions = getLocalizacionesIterable();
+        if (localizacions.iterator().hasNext()) {
+            PolylineOptions polyline = new PolylineOptions();
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            for (Localizacion localizacion : localizacions) {
+                LatLng position = new LatLng(localizacion.getLatitud(), localizacion.getLongitud());
+                getMap().addMarker(new MarkerOptions().position(position));
+                builder.include(position);
+                polyline.add(position);
+            }
+            getMap().addPolyline(polyline.width(5));
+            moveCamera(builder);
         }
-        getMap().addPolyline(polyline.width(5));
-        moveCamera(builder);
     }
 
     private void moveCamera(final LatLngBounds.Builder builder) {
