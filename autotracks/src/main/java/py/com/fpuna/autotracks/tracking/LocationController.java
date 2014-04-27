@@ -18,7 +18,7 @@ import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 public class LocationController {
 
-    private static final int INTERVAL_IN_MILLIS = 10 * 1000;
+    private static final int INTERVAL_IN_MILLIS = 30 * 1000; // 30 segundos
 
     private Context mContext;
     private SharedPreferences mPreferences;
