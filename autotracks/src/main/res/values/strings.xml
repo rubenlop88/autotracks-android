@@ -10,5 +10,8 @@
     <string name="menu_eliminar_ruta">Eliminar Track</string>
     <string name="menu_enviar_ruta">Enviar Track</string>
     <string name="vaciar_ruta_list">Todavía no se ha registrado ningún track. Seleccione la opción "Iniciar" para comenzar a registrar tracks.</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
 </resources>
