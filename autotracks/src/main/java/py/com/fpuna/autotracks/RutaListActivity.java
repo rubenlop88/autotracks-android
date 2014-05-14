@@ -1,7 +1,9 @@
 package py.com.fpuna.autotracks;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -24,6 +26,11 @@ public class RutaListActivity extends ActionBarActivity implements
         RutaListFragment.Callbacks,
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener {
+
+    public static void startActivity(Context context) {
+        Intent detailIntent = new Intent(context, RutaListActivity.class);
+        context.startActivity(detailIntent);
+    }
 
     private final static int RESOLUTION_REQUEST = 9000;
 

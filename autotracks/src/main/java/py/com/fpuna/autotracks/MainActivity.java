@@ -13,7 +13,6 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         WebView myWebView = (WebView) findViewById(R.id.webView);
         myWebView.getSettings().setJavaScriptEnabled(true);
         myWebView.loadUrl("file:///android_asset/index.html");
@@ -28,7 +27,8 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_rutas_list) {
+            RutaListActivity.startActivity(this);
             return true;
         }
         return super.onOptionsItemSelected(item);

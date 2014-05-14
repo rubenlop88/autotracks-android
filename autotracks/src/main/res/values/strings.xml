@@ -12,6 +12,6 @@
     <string name="vaciar_ruta_list">Todavía no se ha registrado ningún track. Seleccione la opción "Iniciar" para comenzar a registrar tracks.</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_rutas_list">Ver Rutas</string>
 
 </resources>
