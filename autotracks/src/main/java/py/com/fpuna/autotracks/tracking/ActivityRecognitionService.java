@@ -4,30 +4,21 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
-import com.google.android.gms.location.ActivityRecognitionClient;
 import com.google.android.gms.location.ActivityRecognitionResult;
 import com.google.android.gms.location.DetectedActivity;
-import com.google.android.gms.location.LocationClient;
 
 import py.com.fpuna.autotracks.Constants;
 
-public class ActivityRecognitionService extends IntentService implements
-        GooglePlayServicesClient.ConnectionCallbacks,
-        GooglePlayServicesClient.OnConnectionFailedListener {
+public class ActivityRecognitionService extends IntentService  {
 
     private static final String KEY_WAS_MOVING = "was_moving";
     private static final String KEY_DETECTION_TIME = "detection_time";
     public static final int MIN_ELAPSED_TIME_MILLIS = 10 * 60 * 1000; // 10 minutos
 
     private SharedPreferences mPreferences;
-    private LocationClient mLocationClient;
     private LocationController mLocationController;
-    private ActivityRecognitionClient mActivityRecognitionClient;
 
     public ActivityRecognitionService() {
         super("ActivityRecognitionService");
@@ -36,35 +27,9 @@ public class ActivityRecognitionService extends IntentService implements
     @Override
     public void onCreate() {
         super.onCreate();
-
         Context context = getApplicationContext();
-
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        mLocationClient = new LocationClient(context, this, this);
-        mLocationController = new LocationController(context, mLocationClient);
-        mActivityRecognitionClient = new ActivityRecognitionClient(context, this, this);
-
-        mLocationClient.connect();
-        mActivityRecognitionClient.connect();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mLocationClient.disconnect();
-        mActivityRecognitionClient.disconnect();
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-    }
-
-    @Override
-    public void onDisconnected() {
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
+        mLocationController = new LocationController(context);
     }
 
     @Override

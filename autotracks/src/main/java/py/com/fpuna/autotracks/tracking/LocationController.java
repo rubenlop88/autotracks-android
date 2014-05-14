@@ -5,8 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationRequest;
 
@@ -16,30 +19,60 @@ import py.com.fpuna.autotracks.provider.AutotracksContract.Rutas;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
-public class LocationController {
+public class LocationController implements
+        GooglePlayServicesClient.ConnectionCallbacks,
+        GooglePlayServicesClient.OnConnectionFailedListener {
+
+    private enum Operation {
+        START, STOP
+    }
 
     private static final int INTERVAL_IN_MILLIS = 30 * 1000; // 30 segundos
 
     private Context mContext;
     private SharedPreferences mPreferences;
     private LocationClient mClient;
+    private Operation operation;
 
-    public LocationController(Context context, LocationClient client) {
+    public LocationController(Context context) {
         this.mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        this.mContext = context;
-        this.mClient = client;
+        this.mClient = new LocationClient(context, this, this);
+        this.mContext = context.getApplicationContext();
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        switch (operation) {
+            case START:
+                mClient.requestLocationUpdates(getLocationRequest(), getPendingIntent());
+                mPreferences.edit().putBoolean(Constants.KEY_LOCATION_UPDATES_STARTED, true).commit();
+                startNewTrack();
+                break;
+            case STOP:
+                mClient.removeLocationUpdates(getPendingIntent());
+                mPreferences.edit().putBoolean(Constants.KEY_LOCATION_UPDATES_STARTED, false).commit();
+                endCurrentTrack();
+                break;
+        }
+        mClient.disconnect();
+    }
+
+    @Override
+    public void onDisconnected() {
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
     }
 
     public void startLocationUpdates() {
-        mClient.requestLocationUpdates(getLocationRequest(), getPendingIntent());
-        mPreferences.edit().putBoolean(Constants.KEY_LOCATION_UPDATES_STARTED, true).commit();
-        startNewTrack();
+        operation = Operation.START;
+        mClient.connect();
     }
 
     public void stopLocationUpdates() {
-        mClient.removeLocationUpdates(getPendingIntent());
-        mPreferences.edit().putBoolean(Constants.KEY_LOCATION_UPDATES_STARTED, false).commit();
-        endCurrentTrack();
+        operation = Operation.STOP;
+        mClient.connect();
     }
 
     private PendingIntent getPendingIntent() {
