@@ -20,8 +20,10 @@ public class LocationService extends IntentService {
     private static final String KEY_LAST_LOCATION_TRACK_ID = "key_last_location_track_id";
     private static final String KEY_LAST_LOCATION_LATITUDE = "key_last_location_latitude";
     private static final String KEY_LAST_LOCATION_LONGITUDE = "key_last_location_longitude";
+    private static final String KEY_LAST_LOCATION_TIME = "key_las_location_time";
 
     private static final float MIN_DISTANCE_METTERS = 50;
+    private static final double MAX_SPEED_METTERS_PER_SECOND = 140 / 3.6;
 
     private Context mContext;
     private SharedPreferences mPreferences;
@@ -65,7 +67,9 @@ public class LocationService extends IntentService {
         float[] results = new float[3];
         Location.distanceBetween(getLastLatitude(), getLastLongitude(), location.getLatitude(), location.getLongitude(), results);
         float distanceInMeters = results[0];
-        return distanceInMeters > MIN_DISTANCE_METTERS;
+        long timeInSeconds = (location.getTime() - getLasTime()) / 1000;
+        double speedInMettersPerSecond = distanceInMeters / timeInSeconds;
+        return distanceInMeters > MIN_DISTANCE_METTERS && speedInMettersPerSecond < MAX_SPEED_METTERS_PER_SECOND;
     }
 
     private boolean isActivityRecognitionUpdatesStarted() {
@@ -92,10 +96,15 @@ public class LocationService extends IntentService {
         return Double.longBitsToDouble(mPreferences.getLong(KEY_LAST_LOCATION_LATITUDE, -1));
     }
 
+    private long getLasTime() {
+        return mPreferences.getLong(KEY_LAST_LOCATION_TIME, -1);
+    }
+
     private void saveLastLocation(Location location, String rutaId) {
         mPreferences.edit().putString(KEY_LAST_LOCATION_TRACK_ID, rutaId)
                 .putLong(KEY_LAST_LOCATION_LATITUDE, Double.doubleToLongBits(location.getLatitude()))
                 .putLong(KEY_LAST_LOCATION_LONGITUDE, Double.doubleToLongBits(location.getLongitude()))
+                .putLong(KEY_LAST_LOCATION_TIME, location.getTime())
                 .commit();
     }
 
