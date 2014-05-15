@@ -16,12 +16,8 @@
             zoom: 13
         });
 
-        L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
-			maxZoom: 18,
-			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-				'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-			id: 'examples.map-9ijuk24y'
+        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(map);
 
         var trafico = L.layerGroup();
@@ -63,13 +59,14 @@
                     if (data[i].kmh < 20) {
                         color = 'red';
                     } else if (data[i].kmh < 40) {
-                        color = 'yellow';
+                        color = 'orange';
                     } else {
                         color = 'green';
                     }
 
                     polyline = L.polyline([L.latLng(data[i].y1, data[i].x1),
-                        L.latLng(data[i].y2, data[i].x2)], {color: color});
+                        L.latLng(data[i].y2, data[i].x2)], {color: color, weight: 4,
+                            opacity: 0.6, smoothFactor: 1});
 
                     trafico.addLayer(polyline);
                     map.addLayer(polyline);
