@@ -1,19 +1,20 @@
 package py.com.fpuna.autotracks;
 
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.ViewTreeObserver;
+import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import py.com.fpuna.autotracks.model.Localizacion;
 import py.com.fpuna.autotracks.provider.AutotracksContract.Localizaciones;
@@ -22,7 +23,7 @@ import py.com.fpuna.autotracks.tracking.AlarmIntentService;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
-public class RutaDetailFragment extends SupportMapFragment {
+public class RutaDetailFragment extends Fragment {
 
     public static final String EXTRA_RUTA_ID = "ruta_id";
 
@@ -35,6 +36,7 @@ public class RutaDetailFragment extends SupportMapFragment {
     }
 
     private String rutaId;
+    private WebView webView = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,7 @@ public class RutaDetailFragment extends SupportMapFragment {
         switch (item.getItemId()) {
             case R.id.menu_item_enviar_ruta:
                 enviarRutas();
+                return true;
             case R.id.menu_item_eliminar_ruta:
                 eliminarRuta();
                 return true;
@@ -81,33 +84,34 @@ public class RutaDetailFragment extends SupportMapFragment {
     }
 
     private void initMap() {
-        Iterable<Localizacion> localizacions = getLocalizacionesIterable();
-        if (localizacions.iterator().hasNext()) {
-            PolylineOptions polyline = new PolylineOptions();
-            LatLngBounds.Builder builder = new LatLngBounds.Builder();
-            for (Localizacion localizacion : localizacions) {
-                LatLng position = new LatLng(localizacion.getLatitud(), localizacion.getLongitud());
-                getMap().addMarker(new MarkerOptions().position(position));
-                builder.include(position);
-                polyline.add(position);
-            }
-            getMap().addPolyline(polyline.width(5));
-            moveCamera(builder);
-        }
-    }
-
-    private void moveCamera(final LatLngBounds.Builder builder) {
-        getView().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-                    getView().getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                } else {
-                    getView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
+        if (webView == null) {
+            webView = (WebView) getView().findViewById(R.id.webViewRuta);
+            webView.getSettings().setJavaScriptEnabled(true);
+            webView.setWebViewClient(new WebViewClient() {
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    Iterable<Localizacion> localizacions = getLocalizacionesIterable();
+                    JSONArray jsonArray = new JSONArray();
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        if (localizacions.iterator().hasNext()) {
+                            for (Localizacion localizacion : localizacions) {
+                                jsonObject = new JSONObject();
+                                jsonObject.put("latitud", localizacion.getLatitud());
+                                jsonObject.put("longitud", localizacion.getLongitud());
+                                jsonArray.put(jsonObject);
+                            }
+                        }
+                        jsonObject = new JSONObject();
+                        jsonObject.put("ruta", jsonArray);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    view.loadUrl("javascript:dibujarRuta(" + jsonObject.toString() + ");");
                 }
-                getMap().moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 50));
-            }
-        });
+            });
+            webView.loadUrl("file:///android_asset/rutas.html");
+        }
     }
 
     private Iterable<Localizacion> getLocalizacionesIterable() {
@@ -115,6 +119,12 @@ public class RutaDetailFragment extends SupportMapFragment {
                 .query(Localizaciones.CONTENT_URI, Localizacion.class)
                 .withSelection(Localizaciones.RUTA + " = ? ", new String[]{rutaId})
                 .query();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View mainView = inflater.inflate(R.layout.activity_ruta_detail, container, false);
+        return mainView;
     }
 
 }

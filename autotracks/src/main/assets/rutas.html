@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html style="width: 100%; height: 100%">
+<head>
+    <title>Leaflet Quick Start Guide Example</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="file:///android_asset/leaflet.css" />
+</head>
+<body style="width: 100%; height: 100%; margin: 0; padding: 0">
+<div id="map" style="width: 100%; height: 100%"></div>
+<script src="file:///android_asset/jquery-2.1.1.min.js"></script>
+<script src="file:///android_asset/leaflet.js"></script>
+<script>
+		var map = L.map('map', {
+            center: [-25.3200, -57.5292],
+            zoom: 13
+        });
+
+        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+		}).addTo(map);
+
+        var trayecto;
+
+        function dibujarRuta(localizaciones) {
+            localizaciones = eval(localizaciones);
+
+            //dibujarTraficoVelocidad();
+
+            var localizacion;
+            var latLongs = [];
+
+            for (var i = 0; i < localizaciones.ruta.length; i++) {
+                localizacion = localizaciones.ruta[i];
+                latLongs.push(L.latLng(localizacion.latitud,localizacion.longitud));
+            }
+
+            trayecto = L.polyline(latLongs, {color: 'blue'});
+            map.addLayer(trayecto);
+            map.fitBounds(trayecto.getBounds());
+        }
+	</script>
+</body>
+</html>
