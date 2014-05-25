@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 
 import py.com.fpuna.autotracks.tracking.ActivityRecognitionController;
+import py.com.fpuna.autotracks.tracking.AlarmReceiver;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -25,6 +26,7 @@ public class MainActivity extends ActionBarActivity {
         if (!isActivityRecognitionUpdatesStarted()) {
             startActivityRecognition();
         }
+        AlarmReceiver.startInexactRepeatingAlarm(this);
     }
 
     private void startActivityRecognition() {
