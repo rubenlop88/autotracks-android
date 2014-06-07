@@ -27,7 +27,7 @@ public class LocationController implements
         START, STOP
     }
 
-    private static final int INTERVAL_IN_MILLIS = 30 * 1000; // 30 segundos
+    private static final int INTERVAL_IN_MILLIS = 60 * 1000; // 60 segundos
 
     private Context mContext;
     private SharedPreferences mPreferences;
