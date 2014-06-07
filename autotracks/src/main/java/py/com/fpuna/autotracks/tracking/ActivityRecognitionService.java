@@ -61,15 +61,22 @@ public class ActivityRecognitionService extends IntentService  {
                 return true;
             }
         }
-        int mostProbableActivity = result.getMostProbableActivity().getType();
-        switch (mostProbableActivity) {
+        DetectedActivity mostProbableActivity = result.getMostProbableActivity();
+        switch (mostProbableActivity.getType()) {
             case DetectedActivity.ON_BICYCLE:
             case DetectedActivity.ON_FOOT:
             case DetectedActivity.STILL:
+            case DetectedActivity.RUNNING:
+            case DetectedActivity.WALKING:
                 return false;
             case DetectedActivity.IN_VEHICLE:
-                setDetectionTimeMillis(currentTime);
-                return true;
+                boolean isMoving = mostProbableActivity.getConfidence() > 80;
+                if (isMoving) {
+                    setDetectionTimeMillis(currentTime);
+                    return true;
+                } else {
+                    return false;
+                }
             default:
                 return wasMoving();
         }
