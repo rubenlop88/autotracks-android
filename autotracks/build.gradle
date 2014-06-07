@@ -23,6 +23,9 @@ repositories {
     maven {
         url "http://repo.commonsware.com"
     }
+    maven {
+        url "http://www.bugsense.com/gradle/"
+    }
 }
 
 dependencies {
@@ -33,4 +36,5 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:1.5.4'
     compile 'nl.qbusict:cupboard:2.0.0'
     compile 'com.commonsware.cwac:wakeful:1.0.1'
+    compile 'com.bugsense.trace:bugsense:3.5'
 }
