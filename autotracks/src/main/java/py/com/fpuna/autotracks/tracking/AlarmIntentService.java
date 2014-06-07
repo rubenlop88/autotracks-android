@@ -33,11 +33,13 @@ public class AlarmIntentService extends WakefulIntentService {
     @Override
     protected void doWakefulWork(Intent intent) {
 
+        eliminarLocalizacionesViejas();
+
         long rutaId = -1;
         Ruta ruta = null;
         List<Ruta> rutas = new ArrayList<Ruta>();
 
-        for (Localizacion localizacion : getLocalizacionesNoEnviadas()) {
+        for (Localizacion localizacion : getLocalizaciones()) {
             if (localizacion.getRuta() != rutaId) {
                 rutaId = localizacion.getRuta();
                 ruta = getRuta(rutaId);
@@ -50,24 +52,48 @@ public class AlarmIntentService extends WakefulIntentService {
         WebService.RutasResource rutasResource = WebService.getRutasResource();
 
         for (Ruta r : rutas) {
-            Resultado resultado = rutasResource.guardarRuta(r);
-            if (resultado != null && resultado.isExitoso()) {
-                updateRuta(r, resultado.getId());
-                updateLocalizaciones(r);
+            if (r.getLocalizaciones().size() > 5) { // no enviamos rutas con menos de 5 localizaciones
+                r.setLocalizaciones(getLocalizacionesNoEnviadas(r)); // enviamos solo lacalizaciones no enviadas
+                Resultado resultado = rutasResource.guardarRuta(r);
+                if (resultado != null && resultado.isExitoso()) {
+                    updateRuta(r, resultado.getId());
+                    updateLocalizaciones(r);
+                }
             }
         }
 
     }
 
     /**
+     * Obtiene las localizaciones no enviadas de la lista de localizaciones de la ruta.
+     */
+    private List<Localizacion> getLocalizacionesNoEnviadas(Ruta ruta) {
+        List<Localizacion> localizacionesNoEnviadas = new ArrayList<Localizacion>();
+        for (Localizacion l : ruta.getLocalizaciones()) {
+            if (Localizacion.Enviado.FALSE.equals(l.getEnviado())) {
+                localizacionesNoEnviadas.add(l);
+            }
+        }
+        return localizacionesNoEnviadas;
+    }
+
+    /**
      * Obtiene todas las localizaciones no enviadas aun al servidor.
      */
-    private Iterable<Localizacion> getLocalizacionesNoEnviadas() {
+    private Iterable<Localizacion> getLocalizaciones() {
         return cupboard().withContext(getApplicationContext())
                 .query(Localizaciones.CONTENT_URI, Localizacion.class)
-                .withSelection(Localizaciones.ENVIADO + " = ? ", new String[]{ Localizacion.Enviado.FALSE })
                 .orderBy(Localizaciones.RUTA)
                 .query();
+    }
+
+    /**
+     * Elimina las localizaciones del dia anterior.
+     */
+    private void eliminarLocalizacionesViejas() {
+        long fecha = System.currentTimeMillis() - 24 * 60 * 60 * 1000;
+        String where = Localizaciones.FECHA + " < " + fecha;
+        getContentResolver().delete(Localizaciones.CONTENT_URI, where, null);
     }
 
     /**
