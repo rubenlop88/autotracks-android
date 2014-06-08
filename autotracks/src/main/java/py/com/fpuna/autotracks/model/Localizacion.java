@@ -110,7 +110,7 @@ public class Localizacion {
         this.fecha = fecha;
     }
 
-    public String isEnviado() {
+    public String getEnviado() {
         return enviado;
     }
 
