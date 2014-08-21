@@ -41,21 +41,4 @@ public class MainActivity extends ActionBarActivity {
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         return mPreferences.getBoolean(Constants.KEY_ACTIVITY_UPDATES_STARTED, false);
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_rutas_list) {
-            RutaListActivity.startActivity(this);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
 }

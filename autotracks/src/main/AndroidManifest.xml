@@ -63,17 +63,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="py.com.fpuna.autotracks.RutaDetailActivity"
-            android:label="@string/title_ruta_detail"
-            android:parentActivityName="py.com.fpuna.autotracks.RutaListActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.rlopez.tracking.TrackListActivity" />
-        </activity>
-        <activity
-            android:name="py.com.fpuna.autotracks.RutaListActivity"
-            android:label="@string/title_activity_main" />
     </application>
 
 </manifest>
