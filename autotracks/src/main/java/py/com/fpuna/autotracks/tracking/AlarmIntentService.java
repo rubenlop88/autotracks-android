@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 import com.commonsware.cwac.wakeful.WakefulIntentService;
 
@@ -21,6 +22,7 @@ import py.com.fpuna.autotracks.provider.AutotracksContract.Localizaciones;
 import py.com.fpuna.autotracks.provider.AutotracksContract.Rutas;
 
 public class AlarmIntentService extends WakefulIntentService {
+    private static String TAG = AlarmIntentService.class.getSimpleName();
 
     public static void startService(Context context) {
         WakefulIntentService.sendWakefulWork(context, AlarmIntentService.class);
@@ -49,17 +51,21 @@ public class AlarmIntentService extends WakefulIntentService {
             ruta.getLocalizaciones().add(localizacion);
         }
 
-        WebService.RutasResource rutasResource = WebService.getRutasResource();
+        try {
+            WebService.RutasResource rutasResource = WebService.getRutasResource();
 
-        for (Ruta r : rutas) {
-            if (r.getLocalizaciones().size() > 5) { // no enviamos rutas con menos de 5 localizaciones
-                r.setLocalizaciones(getLocalizacionesNoEnviadas(r)); // enviamos solo lacalizaciones no enviadas
-                Resultado resultado = rutasResource.guardarRuta(r);
-                if (resultado != null && resultado.isExitoso()) {
-                    updateRuta(r, resultado.getId());
-                    updateLocalizaciones(r);
+            for (Ruta r : rutas) {
+                if (r.getLocalizaciones().size() > 5) { // no enviamos rutas con menos de 5 localizaciones
+                    r.setLocalizaciones(getLocalizacionesNoEnviadas(r)); // enviamos solo lacalizaciones no enviadas
+                    Resultado resultado = rutasResource.guardarRuta(r);
+                    if (resultado != null && resultado.isExitoso()) {
+                        updateRuta(r, resultado.getId());
+                        updateLocalizaciones(r);
+                    }
                 }
             }
+        } catch (Exception e) {
+            Log.e(TAG,"Error de comunicación", e);
         }
 
     }

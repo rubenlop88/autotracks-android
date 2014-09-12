@@ -21,7 +21,7 @@ public class ActivityRecognitionController implements
         START, STOP
     }
 
-    private static final int INTERVAL_IN_MILLIS = 10 * 1000; // 10 segundos
+    private static final int INTERVAL_IN_MILLIS = 15 * 1000; // 15 segundos
 
     private Context mContext;
     private SharedPreferences mPreferences;

@@ -13,5 +13,7 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_rutas_list">Ver Rutas</string>
+    <string name="action_settings">Información</string>
+    <string name="action_refresh">Refrescar</string>
 
 </resources>

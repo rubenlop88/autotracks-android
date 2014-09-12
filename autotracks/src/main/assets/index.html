@@ -81,7 +81,14 @@
             trafico.clearLayers();
         };
 
+        function centrarMapa(latitud, longitud) {
+            map.panTo(new L.LatLng(latitud,longitud));
+        };
+
         dibujarTraficoVelocidad();
+
+
+
 
 	</script>
 </body>
