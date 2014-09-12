@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -50,6 +51,29 @@ public class MainActivity extends ActionBarActivity implements
         AlarmReceiver.startInexactRepeatingAlarm(this);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                refrescarTrafico();
+                return true;
+            /*case R.id.action_settings:
+                //TODO opciones del menú
+                return true;*/
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_acivity_actions, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
     private void startActivityRecognition() {
         mActivityRecognitionController = new ActivityRecognitionController(this);
         mActivityRecognitionController.startActivityRecognitionUpdates();
@@ -69,6 +93,10 @@ public class MainActivity extends ActionBarActivity implements
             Toast.makeText(this, "No se encontró Google Play Services en el dispositivo",
                     Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void refrescarTrafico() {
+        myWebView.loadUrl("javascript:dibujarTraficoVelocidad();");
     }
 
     @Override
