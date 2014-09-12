@@ -15,5 +15,9 @@
     <string name="action_rutas_list">Ver Rutas</string>
     <string name="action_settings">Información</string>
     <string name="action_refresh">Refrescar</string>
+    <string name="action_share">Compartir</string>
+    <string name="action_about">Acerca de...</string>
+    <string name="share_intent_text">Descarga Autotracks! Colabora para monitorear el estado del tráfico en Asunción y Gran Asunción :). https://play.google.com/store/apps/details?id=py.com.fpuna.autotracks</string>
+    <string name="share_intent_title">Comparte Autotracks!</string>
 
 </resources>

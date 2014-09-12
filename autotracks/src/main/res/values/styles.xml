@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!-- File created by the Android Action Bar Style Generator
 
      Copyright (C) 2011 The Android Open Source Project
@@ -20,7 +19,7 @@
 
 <resources>
 
-    <style name="Theme.Autotracks" parent="@style/Theme.AppCompat.Light">
+    <style name="Theme.Autotracks" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <item name="actionBarItemBackground">@drawable/selectable_background_autotracks</item>
         <item name="popupMenuStyle">@style/PopupMenu.Autotracks</item>
         <item name="dropDownListViewStyle">@style/DropDownListView.Autotracks</item>
@@ -30,6 +29,10 @@
         <item name="actionModeBackground">@drawable/cab_background_top_autotracks</item>
         <item name="actionModeSplitBackground">@drawable/cab_background_bottom_autotracks</item>
         <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Autotracks</item>
+
+                <!-- Light.DarkActionBar specific -->
+        <item name="actionBarWidgetTheme">@style/Theme.Autotracks.Widget</item>
+
     </style>
 
     <style name="ActionBar.Solid.Autotracks" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
@@ -39,43 +42,51 @@
         <item name="progressBarStyle">@style/ProgressBar.Autotracks</item>
         <item name="icon">@drawable/actionbar_icon</item>
         <item name="displayOptions">showHome|showTitle</item>
+        <item name="titleTextStyle">@style/ActionBar.TitleText</item>
     </style>
 
-    <style name="ActionBar.Transparent.Autotracks" parent="@style/Widget.AppCompat.Light.ActionBar">
+    <style name="ActionBar.TitleText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold|italic</item>
+    </style>
+
+    <style name="ActionBar.Transparent.Autotracks" parent="@style/Widget.AppCompat.ActionBar">
         <item name="background">@drawable/ab_transparent_autotracks</item>
         <item name="progressBarStyle">@style/ProgressBar.Autotracks</item>
     </style>
-
-    <style name="PopupMenu.Autotracks" parent="@style/Widget.AppCompat.Light.PopupMenu">
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_autotracks</item>
+	
+    <style name="PopupMenu.Autotracks" parent="@style/Widget.AppCompat.PopupMenu">	
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_autotracks</item>	
     </style>
-
-    <style name="DropDownListView.Autotracks" parent="@style/Widget.AppCompat.Light.ListView.DropDown">
+	
+    <style name="DropDownListView.Autotracks" parent="@style/Widget.AppCompat.ListView.DropDown">
         <item name="android:listSelector">@drawable/selectable_background_autotracks</item>
     </style>
 
-    <style name="ActionBarTabStyle.Autotracks" parent="@style/Widget.AppCompat.Light.ActionBar.TabView">
+    <style name="ActionBarTabStyle.Autotracks" parent="@style/Widget.AppCompat.ActionBar.TabView">
         <item name="android:background">@drawable/tab_indicator_ab_autotracks</item>
     </style>
-
-    <style name="DropDownNav.Autotracks" parent="@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar">
+	
+    <style name="DropDownNav.Autotracks" parent="@style/Widget.AppCompat.Spinner.DropDown.ActionBar">
         <item name="android:background">@drawable/spinner_background_ab_autotracks</item>
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_autotracks</item>
         <item name="android:dropDownSelector">@drawable/selectable_background_autotracks</item>
     </style>
-
+    
     <style name="ProgressBar.Autotracks" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/progress_horizontal_autotracks</item>
     </style>
-
-    <style name="ActionButton.CloseMode.Autotracks" parent="@style/Widget.AppCompat.Light.ActionButton.CloseMode">
+    
+    <style name="ActionButton.CloseMode.Autotracks" parent="@style/Widget.AppCompat.ActionButton.CloseMode">
         <item name="android:background">@drawable/btn_cab_done_autotracks</item>
     </style>
-
+    
     <!-- this style is only referenced in a Light.DarkActionBar based theme -->
     <style name="Theme.Autotracks.Widget" parent="@style/Theme.AppCompat">
         <item name="popupMenuStyle">@style/PopupMenu.Autotracks</item>
         <item name="dropDownListViewStyle">@style/DropDownListView.Autotracks</item>
+        <item name="android:textColor">@android:color/primary_text_light</item>
     </style>
 
 </resources>
