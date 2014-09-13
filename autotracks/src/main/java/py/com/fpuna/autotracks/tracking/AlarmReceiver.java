@@ -11,14 +11,21 @@ import com.commonsware.cwac.wakeful.WakefulIntentService;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
-    public static void startInexactRepeatingAlarm(Context context) {
+    public static boolean isAlarmSetUp(Context context) {
+        return getPendingIntent(context, PendingIntent.FLAG_NO_CREATE) != null;
+    }
+
+    public static void setUpAlarm(Context context) {
         AlarmManager alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, AlarmReceiver.class);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
         alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 AlarmManager.INTERVAL_FIFTEEN_MINUTES,
                 AlarmManager.INTERVAL_FIFTEEN_MINUTES,
-                alarmIntent);
+                getPendingIntent(context, 0));
+    }
+
+    private static PendingIntent getPendingIntent(Context context, int flags) {
+        Intent intent = new Intent(context, AlarmReceiver.class);
+        return PendingIntent.getBroadcast(context, 0, intent, flags);
     }
 
     public AlarmReceiver() {

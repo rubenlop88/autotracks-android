@@ -1,17 +1,15 @@
 package py.com.fpuna.autotracks;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.LabeledIntent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.Resources;
 import android.location.Location;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,6 +23,9 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import py.com.fpuna.autotracks.tracking.ActivityRecognitionController;
 import py.com.fpuna.autotracks.tracking.AlarmReceiver;
@@ -55,7 +56,9 @@ public class MainActivity extends ActionBarActivity implements
         if (!isActivityRecognitionUpdatesStarted() && isBatteryLevelOk()) {
             startActivityRecognition();
         }
-        AlarmReceiver.startInexactRepeatingAlarm(this);
+        if (!AlarmReceiver.isAlarmSetUp(this)) {
+            AlarmReceiver.setUpAlarm(this);
+        }
     }
 
     @Override
@@ -63,7 +66,7 @@ public class MainActivity extends ActionBarActivity implements
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                refrescarTrafico();
+                refreschTrafic();
                 return true;
             case R.id.action_share:
                 startShareIntent();
@@ -106,7 +109,7 @@ public class MainActivity extends ActionBarActivity implements
         }
     }
 
-    private void refreshTraffic() {
+    private void refreschTrafic() {
         mWebView.loadUrl("javascript:dibujarTraficoVelocidad();");
     }
 
@@ -130,11 +133,9 @@ public class MainActivity extends ActionBarActivity implements
 
         // Filtramos solo los activities que queremos mostrar
         List<LabeledIntent> intentList = new ArrayList<LabeledIntent>();
-        for (int i = 0; i < resInfo.size(); i++) {
-            ResolveInfo ri = resInfo.get(i);
+        for (ResolveInfo ri : resInfo) {
             String packageName = ri.activityInfo.packageName;
-            if(packageName.contains("mms")
-                    || packageName.contains("twitter")
+            if (packageName.contains("twitter")
                     || packageName.contains("facebook")
                     || packageName.contains("whatsapp")
                     || packageName.contains("plus")

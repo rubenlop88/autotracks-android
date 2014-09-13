@@ -16,7 +16,7 @@ public class BootReceiver extends BroadcastReceiver {
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
             mActivityRecognitionController = new ActivityRecognitionController(context);
             mActivityRecognitionController.startActivityRecognitionUpdates();
-            AlarmReceiver.startInexactRepeatingAlarm(context);
+            AlarmReceiver.setUpAlarm(context);
         }
     }
 
