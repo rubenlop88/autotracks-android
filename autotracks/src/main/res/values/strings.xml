@@ -2,13 +2,71 @@
 <resources>
 
     <string name="app_name">Autotracks</string>
+
+    <!-- Menus -->
     <string name="action_refresh">Refrescar</string>
     <string name="action_share">Compartir</string>
-    <string name="action_about">Información.</string>
-    <string name="share_intent_text">Descarga Autotracks! Colabora para monitorear el estado del tráfico en Asunción y Gran Asunción :). https://play.google.com/store/apps/details?id=py.com.fpuna.autotracks</string>
+    <string name="action_about">Información</string>
+
+    <!-- Texto para compartir en redes sociales -->
+    <string name="share_intent_text">
+        Descarga Autotracks! Colabora para monitorear el estado
+        del tráfico en Asunción y Gran Asunción :).
+        https://play.google.com/store/apps/details?id=py.com.fpuna.autotracks
+    </string>
     <string name="share_intent_title">Comparte Autotracks!</string>
-    <string name="title_activity_about">Info</string>
-    <string name="title_section_que_es">Qué es?</string>
+
+    <string name="title_activity_about">Información</string>
+
+    <!-- Sobre como funciona la app -->
+    <string name="title_section_autotracks">Sobre Autotracks</string>
+    <string name="info_que_es">¿QUÉ ES?</string>
+    <string name="info_que_es_descripcion">
+        Autotracks es una aplicación colaborativa que te permite
+        conocer en tiempo real el estado del tráfico en las calles
+        de Asunción y Gran Asunción.
+    </string>
+    <string name="info_como_funciona">¿CÓMO FUNCIONA?</string>
+    <string name="info_como_funciona_descripcion">
+        La aplicación colecta datos de manera anónima sobre la
+        ubicación y velocidad del dispositivo utilizando
+        cualquier sensor que tenga a su disposición GPS, WiFi,
+        GSM y envía esta información a un servidor que se encarga de
+        procesarla para determinar el estado de las calles.
+    </string>
+    <string name="info_leyendas">LEYENDAS</string>
+    <string name="info_leyendas_descripcion">
+        Se pueden distinguir tres estados que muestran la
+        velocidad promedio de la ruta de acuerdo al color:
+    </string>
+    <string name="info_leyendas_descripcion_verde">
+        Verde: 40 o más kilómetros por hora.
+    </string>
+    <string name="info_leyendas_descripcion_naranja">
+        Naranja: entre 20 y 39 kilómetros por hora.
+    </string>
+    <string name="info_leyendas_descripcion_rojo">
+        Rojo: entre 0 y 19 kilómetros por hora.
+    </string>
+
+    <!-- Sobre el proyecto y los autores -->
     <string name="title_section_autores">Autores</string>
+    <string name="autores_proyecto">PROYECTO</string>
+    <string name="autores_proyecto_descripcion">
+        Autotracks es una aplicación desarrollada como parte
+        del trabajo de grado de la carrera de Ingeniería Informática
+        de la Facutltad Politécnica de la Universidad Nacional de Asunción.
+        Es completamente open source y fue desarrollada en su totalidad utilizando
+        herramientas libres y gratuitas.
+        \n\nEl principal objetivo de este proyecto es construir un sistema que permita
+        recolectar y procesar información del estado del tránsito en tiempo real
+        para ofrecer funcionalidades que ayuden al control y/o reducción de la
+        congestión de tránsito.
+    </string>
+    <string name="autores_desarrolladores">DESARROLLADORES</string>
+    <string name="autores_desarrolladores_acampuzano">Alfredo Campuzano</string>
+    <string name="autores_desarrolladores_rlopez">Rubén López</string>
+    <string name="autores_tutor">TUTOR</string>
+    <string name="autores_tutor_jlima">Ing. Joaquín Lima</string>
 
 </resources>

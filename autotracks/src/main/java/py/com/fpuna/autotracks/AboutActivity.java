@@ -68,8 +68,10 @@ public class AboutActivity extends ActionBarActivity implements ActionBar.TabLis
             switch (position) {
                 case 0:
                     return InfoFragment.newInstance();
+                case 1:
+                    return AuthFragment.newInstance();
                 default:
-                    return PlaceholderFragment.newInstance();
+                    return null;
             }
         }
 
@@ -83,31 +85,11 @@ public class AboutActivity extends ActionBarActivity implements ActionBar.TabLis
             Locale l = Locale.getDefault();
             switch (position) {
                 case 0:
-                    return getString(R.string.title_section_que_es).toUpperCase(l);
+                    return getString(R.string.title_section_autotracks).toUpperCase(l);
                 case 1:
                     return getString(R.string.title_section_autores).toUpperCase(l);
             }
             return null;
-        }
-
-    }
-
-    public static class PlaceholderFragment extends Fragment {
-
-        public static PlaceholderFragment newInstance() {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_about, container, false);
-            return rootView;
         }
 
     }

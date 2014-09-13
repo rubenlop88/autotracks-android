@@ -94,4 +94,32 @@
         <item name="android:textColor">@android:color/primary_text_light</item>
     </style>
 
+    <style name="InfoTextView">
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textColor">@color/red</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="InfoDescTextView">
+        <item name="android:padding">8dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="InfoLeyendaTextView">
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="InfoAutoresTextView" parent="InfoLeyendaTextView">
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:drawableLeft">@drawable/circle_black</item>
+    </style>
+
 </resources>
