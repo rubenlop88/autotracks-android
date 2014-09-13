@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="py.com.fpuna.autotracks" >
+    package="py.com.fpuna.autotracks">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -26,36 +26,45 @@
             android:value="@integer/google_play_services_version" />
 
         <service
-            android:name=".tracking.LocationService"
+            android:name="py.com.fpuna.autotracks.tracking.LocationService"
             android:exported="false" />
         <service
-            android:name=".tracking.ActivityRecognitionService"
+            android:name="py.com.fpuna.autotracks.tracking.ActivityRecognitionService"
             android:exported="false" />
         <service
-            android:name=".tracking.AlarmIntentService"
-            android:exported="false" />
+            android:name="py.com.fpuna.autotracks.tracking.AlarmIntentService"
+            android:exported="false"/>
 
         <receiver
-            android:name=".tracking.BootReceiver"
+            android:name="py.com.fpuna.autotracks.tracking.BootReceiver"
             android:enabled="true"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".tracking.AlarmReceiver"
+            android:name="py.com.fpuna.autotracks.tracking.AlarmReceiver"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true"/>
+        <receiver
+            android:name="py.com.fpuna.autotracks.battery.BatteryReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BATTERY_LOW"/>
+                <action android:name="android.intent.action.BATTERY_OKAY"/>
+            </intent-filter>
+        </receiver>
 
         <provider
-            android:name=".provider.AutotracksProvider"
+            android:name="py.com.fpuna.autotracks.provider.AutotracksProvider"
             android:authorities="py.com.fpuna.autotracks"
             android:exported="false" />
 
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:name="py.com.fpuna.autotracks.MainActivity"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

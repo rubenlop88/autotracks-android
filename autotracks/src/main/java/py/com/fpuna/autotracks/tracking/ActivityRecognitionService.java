@@ -28,7 +28,8 @@ public class ActivityRecognitionService extends IntentService  {
     public void onCreate() {
         super.onCreate();
         Context context = getApplicationContext();
-        mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        mPreferences = context.getSharedPreferences("py.com.fpuna.autotracks_preferences",
+                Context.MODE_PRIVATE);
         mLocationController = new LocationController(context);
     }
 

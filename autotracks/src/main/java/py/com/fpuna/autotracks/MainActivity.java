@@ -1,7 +1,6 @@
 package py.com.fpuna.autotracks;
 
-import android.content.ComponentName;
-import android.content.Intent;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.LabeledIntent;
 import android.content.pm.PackageManager;
@@ -27,9 +26,6 @@ import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import py.com.fpuna.autotracks.tracking.ActivityRecognitionController;
 import py.com.fpuna.autotracks.tracking.AlarmReceiver;
 
@@ -40,8 +36,8 @@ public class MainActivity extends ActionBarActivity implements
     private static String TAG = MainActivity.class.getSimpleName();
     private SharedPreferences mPreferences;
     private ActivityRecognitionController mActivityRecognitionController;
-    private LocationClient mLocationclient;
     private WebView mWebView;
+    private LocationClient locationclient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +52,7 @@ public class MainActivity extends ActionBarActivity implements
         });
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.loadUrl("file:///android_asset/index.html");
-        if (!isActivityRecognitionUpdatesStarted()) {
+        if (!isActivityRecognitionUpdatesStarted() && isBatteryLevelOk()) {
             startActivityRecognition();
         }
         AlarmReceiver.startInexactRepeatingAlarm(this);
@@ -94,23 +90,28 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     private boolean isActivityRecognitionUpdatesStarted() {
-        mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mPreferences = getSharedPreferences("py.com.fpuna.autotracks_preferences",
+                Context.MODE_PRIVATE);
         return mPreferences.getBoolean(Constants.KEY_ACTIVITY_UPDATES_STARTED, false);
     }
 
     private void checkCurrentLocation() {
         int resp = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         if (resp == ConnectionResult.SUCCESS) {
-            mLocationclient = new LocationClient(this, this, this);
-            mLocationclient.connect();
+            locationclient = new LocationClient(this, this, this);
+            locationclient.connect();
         } else {
             Toast.makeText(this, "No se encontró Google Play Services en el dispositivo",
                     Toast.LENGTH_LONG).show();
         }
     }
 
-    private void refrescarTrafico() {
+    private void refreshTraffic() {
         mWebView.loadUrl("javascript:dibujarTraficoVelocidad();");
+    }
+
+    private boolean isBatteryLevelOk() {
+        return !mPreferences.getBoolean(Constants.KEY_BATTERY_LEVEL_LOW, false);
     }
 
     public void startShareIntent() {
@@ -164,12 +165,12 @@ public class MainActivity extends ActionBarActivity implements
     @Override
     public void onConnected(Bundle bundle) {
         Log.i(TAG, "Location client connected");
-        Location loc = mLocationclient.getLastLocation();
+        Location loc = locationclient.getLastLocation();
         if (loc != null) {
             mWebView.loadUrl("javascript:centrarMapa(" + loc.getLatitude() + ","
                     + loc.getLongitude() + ");");
         }
-        mLocationclient.disconnect();
+        locationclient.disconnect();
     }
 
     @Override
