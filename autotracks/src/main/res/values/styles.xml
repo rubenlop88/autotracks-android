@@ -24,6 +24,7 @@
         <item name="popupMenuStyle">@style/PopupMenu.Autotracks</item>
         <item name="dropDownListViewStyle">@style/DropDownListView.Autotracks</item>
         <item name="actionBarTabStyle">@style/ActionBarTabStyle.Autotracks</item>
+        <item name="actionBarTabTextStyle">@style/ActionBarTabTextStyle.Autotracks</item>
         <item name="actionDropDownStyle">@style/DropDownNav.Autotracks</item>
         <item name="actionBarStyle">@style/ActionBar.Solid.Autotracks</item>
         <item name="actionModeBackground">@drawable/cab_background_top_autotracks</item>
@@ -67,7 +68,11 @@
     <style name="ActionBarTabStyle.Autotracks" parent="@style/Widget.AppCompat.ActionBar.TabView">
         <item name="android:background">@drawable/tab_indicator_ab_autotracks</item>
     </style>
-	
+
+    <style name="ActionBarTabTextStyle.Autotracks" parent="@style/Widget.AppCompat.ActionBar.TabText">
+        <item name="android:textColor">@color/red</item>
+    </style>
+
     <style name="DropDownNav.Autotracks" parent="@style/Widget.AppCompat.Spinner.DropDown.ActionBar">
         <item name="android:background">@drawable/spinner_background_ab_autotracks</item>
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_autotracks</item>

@@ -2,22 +2,13 @@
 <resources>
 
     <string name="app_name">Autotracks</string>
-    <string name="title_ruta_detail">Ruta</string>
-    <string name="menu_iniciar">Iniciar</string>
-    <string name="menu_detener">Detener</string>
-    <string name="menu_refrescar">Refrescar</string>
-    <string name="menu_eliminar_todos">Eliminar Todos</string>
-    <string name="menu_eliminar_ruta">Eliminar Track</string>
-    <string name="menu_enviar_ruta">Enviar Track</string>
-    <string name="vaciar_ruta_list">Todavía no se ha registrado ningún track. Seleccione la opción "Iniciar" para comenzar a registrar tracks.</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_rutas_list">Ver Rutas</string>
-    <string name="action_settings">Información</string>
     <string name="action_refresh">Refrescar</string>
     <string name="action_share">Compartir</string>
-    <string name="action_about">Acerca de...</string>
+    <string name="action_about">Información.</string>
     <string name="share_intent_text">Descarga Autotracks! Colabora para monitorear el estado del tráfico en Asunción y Gran Asunción :). https://play.google.com/store/apps/details?id=py.com.fpuna.autotracks</string>
     <string name="share_intent_title">Comparte Autotracks!</string>
+    <string name="title_activity_about">Info</string>
+    <string name="title_section_que_es">Qué es?</string>
+    <string name="title_section_autores">Autores</string>
 
 </resources>

@@ -24,6 +24,7 @@
         <item name="android:popupMenuStyle">@style/PopupMenu.Autotracks</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Autotracks</item>
         <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Autotracks</item>
+        <item name="android:actionBarTabTextStyle">@style/ActionBarTabTextStyle.Autotracks</item>
         <item name="android:actionDropDownStyle">@style/DropDownNav.Autotracks</item>
         <item name="android:actionBarStyle">@style/ActionBar.Solid.Autotracks</item>
         <item name="android:actionModeBackground">@drawable/cab_background_top_autotracks</item>
