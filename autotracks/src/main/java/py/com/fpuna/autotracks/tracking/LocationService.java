@@ -36,7 +36,8 @@ public class LocationService extends IntentService {
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
-        mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        mPreferences = mContext.getSharedPreferences("py.com.fpuna.autotracks_preferences",
+                Context.MODE_PRIVATE);
     }
 
     @Override

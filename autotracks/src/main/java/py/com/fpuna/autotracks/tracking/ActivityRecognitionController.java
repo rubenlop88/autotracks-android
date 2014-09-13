@@ -29,7 +29,8 @@ public class ActivityRecognitionController implements
     private Operation operation;
 
     public ActivityRecognitionController(Context context) {
-        this.mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        this.mPreferences = context.getSharedPreferences("py.com.fpuna.autotracks_preferences",
+                Context.MODE_PRIVATE);
         this.mClient = new ActivityRecognitionClient(context, this, this);
         this.mContext = context.getApplicationContext();
     }
