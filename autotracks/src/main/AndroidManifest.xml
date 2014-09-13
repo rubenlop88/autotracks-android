@@ -34,7 +34,7 @@
             android:exported="false" />
         <service
             android:name="py.com.fpuna.autotracks.tracking.AlarmIntentService"
-            android:exported="false"></service>
+            android:exported="false"/>
 
         <receiver
             android:name="py.com.fpuna.autotracks.tracking.BootReceiver"
@@ -47,7 +47,17 @@
         <receiver
             android:name="py.com.fpuna.autotracks.tracking.AlarmReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true"/>
+        <receiver
+            android:name="py.com.fpuna.autotracks.battery.BatteryReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BATTERY_LOW"/>
+                <action android:name="android.intent.action.BATTERY_OKAY"/>
+            </intent-filter>
+        </receiver>
+
 
         <provider
             android:name="py.com.fpuna.autotracks.provider.AutotracksProvider"

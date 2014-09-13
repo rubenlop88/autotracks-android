@@ -1,9 +1,9 @@
 package py.com.fpuna.autotracks;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -45,7 +45,7 @@ public class MainActivity extends ActionBarActivity implements
         });
         myWebView.getSettings().setJavaScriptEnabled(true);
         myWebView.loadUrl("file:///android_asset/index.html");
-        if (!isActivityRecognitionUpdatesStarted()) {
+        if (!isActivityRecognitionUpdatesStarted() && isBatteryLevelOk()) {
             startActivityRecognition();
         }
         AlarmReceiver.startInexactRepeatingAlarm(this);
@@ -56,7 +56,7 @@ public class MainActivity extends ActionBarActivity implements
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                refrescarTrafico();
+                refreshTraffic();
                 return true;
             /*case R.id.action_settings:
                 //TODO opciones del menú
@@ -80,7 +80,8 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     private boolean isActivityRecognitionUpdatesStarted() {
-        mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mPreferences = getSharedPreferences("py.com.fpuna.autotracks_preferences",
+                Context.MODE_PRIVATE);
         return mPreferences.getBoolean(Constants.KEY_ACTIVITY_UPDATES_STARTED, false);
     }
 
@@ -95,8 +96,12 @@ public class MainActivity extends ActionBarActivity implements
         }
     }
 
-    private void refrescarTrafico() {
+    private void refreshTraffic() {
         myWebView.loadUrl("javascript:dibujarTraficoVelocidad();");
+    }
+
+    private boolean isBatteryLevelOk() {
+        return !mPreferences.getBoolean(Constants.KEY_BATTERY_LEVEL_LOW, false);
     }
 
     @Override
