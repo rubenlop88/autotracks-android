@@ -1,7 +1,12 @@
 package py.com.fpuna.autotracks;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.LabeledIntent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -19,6 +24,9 @@ import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import py.com.fpuna.autotracks.tracking.ActivityRecognitionController;
 import py.com.fpuna.autotracks.tracking.AlarmReceiver;
 
@@ -29,7 +37,7 @@ public class MainActivity extends ActionBarActivity implements
     private static String TAG = MainActivity.class.getSimpleName();
     private SharedPreferences mPreferences;
     private ActivityRecognitionController mActivityRecognitionController;
-    private WebView myWebView;
+    private WebView mWebView;
     private LocationClient locationclient;
 
     @Override
@@ -37,18 +45,20 @@ public class MainActivity extends ActionBarActivity implements
         super.onCreate(savedInstanceState);
         BugSenseHandler.initAndStartSession(this, "2915cd16");
         setContentView(R.layout.activity_main);
-        myWebView = (WebView) findViewById(R.id.webView);
-        myWebView.setWebViewClient(new WebViewClient() {
+        mWebView = (WebView) findViewById(R.id.webView);
+        mWebView.setWebViewClient(new WebViewClient() {
             public void onPageFinished(WebView view, String url) {
                 checkCurrentLocation();
             }
         });
-        myWebView.getSettings().setJavaScriptEnabled(true);
-        myWebView.loadUrl("file:///android_asset/index.html");
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.loadUrl("file:///android_asset/index.html");
         if (!isActivityRecognitionUpdatesStarted() && isBatteryLevelOk()) {
             startActivityRecognition();
         }
-        AlarmReceiver.startInexactRepeatingAlarm(this);
+        if (!AlarmReceiver.isAlarmSetUp(this)) {
+            AlarmReceiver.setUpAlarm(this);
+        }
     }
 
     @Override
@@ -56,11 +66,14 @@ public class MainActivity extends ActionBarActivity implements
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                refreshTraffic();
+                refreschTrafic();
                 return true;
-            /*case R.id.action_settings:
-                //TODO opciones del menú
-                return true;*/
+            case R.id.action_share:
+                startShareIntent();
+                return true;
+            case R.id.action_about:
+                startActivity(new Intent(this, AboutActivity.class));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -96,12 +109,58 @@ public class MainActivity extends ActionBarActivity implements
         }
     }
 
-    private void refreshTraffic() {
-        myWebView.loadUrl("javascript:dibujarTraficoVelocidad();");
+    private void refreschTrafic() {
+        mWebView.loadUrl("javascript:dibujarTraficoVelocidad();");
     }
 
     private boolean isBatteryLevelOk() {
         return !mPreferences.getBoolean(Constants.KEY_BATTERY_LEVEL_LOW, false);
+    }
+
+    public void startShareIntent() {
+        PackageManager pm = getPackageManager();
+
+        // Chooser especifico para apps de correo electronico, de esta forma el chooser inicialmente
+        // tendra solo algunos activities, no se mostraran por ej. las opciones de Bluetooth o Wifi.
+        Intent emailIntent = getShareIntent();
+        emailIntent.setType("message/rfc822");
+        CharSequence title = getResources().getText(R.string.share_intent_title);
+        Intent openInChooser = Intent.createChooser(emailIntent, title);
+
+        // Obtenemos todos los activities que responden a text/plain
+        Intent sendIntent = getShareIntent();
+        List<ResolveInfo> resInfo = pm.queryIntentActivities(sendIntent, 0);
+
+        // Filtramos solo los activities que queremos mostrar
+        List<LabeledIntent> intentList = new ArrayList<LabeledIntent>();
+        for (ResolveInfo ri : resInfo) {
+            String packageName = ri.activityInfo.packageName;
+            if (packageName.contains("twitter")
+                    || packageName.contains("facebook")
+                    || packageName.contains("whatsapp")
+                    || packageName.contains("plus")
+                    || packageName.contains("talk")
+                    || packageName.contains("viber")) {
+                Intent intent = getShareIntent();
+                intent.setComponent(new ComponentName(packageName, ri.activityInfo.name));
+                intentList.add(new LabeledIntent(intent, packageName, ri.loadLabel(pm), ri.icon));
+            }
+        }
+
+        // Agregamos los demas activities que queremos mostrar al chooser
+        LabeledIntent[] extraIntents = intentList.toArray( new LabeledIntent[ intentList.size() ]);
+        openInChooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents);
+
+        // Mostramos el chooser
+        startActivity(openInChooser);
+    }
+
+    private Intent getShareIntent() {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_intent_text));
+        sendIntent.setType("text/plain");
+        return sendIntent;
     }
 
     @Override
@@ -109,7 +168,7 @@ public class MainActivity extends ActionBarActivity implements
         Log.i(TAG, "Location client connected");
         Location loc = locationclient.getLastLocation();
         if (loc != null) {
-            myWebView.loadUrl("javascript:centrarMapa(" + loc.getLatitude() + ","
+            mWebView.loadUrl("javascript:centrarMapa(" + loc.getLatitude() + ","
                     + loc.getLongitude() + ");");
         }
         locationclient.disconnect();

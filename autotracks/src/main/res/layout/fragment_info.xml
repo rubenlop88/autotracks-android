@@ -1,0 +1,53 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="py.com.fpuna.autotracks.InfoFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <TextView
+            style="@style/InfoTextView"
+            android:text="@string/info_que_es" />
+
+        <TextView
+            style="@style/InfoDescTextView"
+            android:text="@string/info_que_es_descripcion" />
+
+        <TextView
+            style="@style/InfoTextView"
+            android:text="@string/info_como_funciona" />
+
+        <TextView
+            style="@style/InfoDescTextView"
+            android:text="@string/info_como_funciona_descripcion" />
+
+        <TextView
+            style="@style/InfoTextView"
+            android:text="@string/info_leyendas" />
+
+        <TextView
+            style="@style/InfoDescTextView"
+            android:text="@string/info_leyendas_descripcion" />
+
+        <TextView
+            style="@style/InfoLeyendaTextView"
+            android:drawableLeft="@drawable/circle_red"
+            android:text="@string/info_leyendas_descripcion_rojo" />
+
+        <TextView
+            style="@style/InfoLeyendaTextView"
+            android:drawableLeft="@drawable/circle_orange"
+            android:text="@string/info_leyendas_descripcion_naranja" />
+
+        <TextView
+            style="@style/InfoLeyendaTextView"
+            android:drawableLeft="@drawable/circle_green"
+            android:text="@string/info_leyendas_descripcion_verde" />
+
+    </LinearLayout>
+</ScrollView>

@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:autotracks="http://schemas.android.com/apk/res-auto" >
-    <!-- Refresh, should appear as action button -->
+
     <item android:id="@+id/action_refresh"
-        android:icon="@drawable/ic_action_refresh"
+        android:icon="@drawable/ic_action_navigation_refresh"
         android:title="@string/action_refresh"
         autotracks:showAsAction="ifRoom" />
-    <!-- Settings, should always be in the overflow -->
-    <!--<item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
+
+    <item android:id="@+id/action_share"
+        android:icon="@drawable/ic_action_social_share"
+        android:title="@string/action_share"
+        autotracks:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/action_about"
+        android:title="@string/action_about"
         autotracks:showAsAction="never" />-->
+
 </menu>
