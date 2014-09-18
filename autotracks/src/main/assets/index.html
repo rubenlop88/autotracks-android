@@ -29,9 +29,11 @@
                 var polyline;
                 var color;
                 for (var i = 0; i < data.length; i++) {
-                    if (data[i].cantidad > 4) {
+                    if (data[i].kmh < 15) {
                         color = 'red';
-                    } else if (data[i].cantidad > 3) {
+                    } else if (data[i].kmh < 30) {
+                        color = 'orange';
+                    } else if (data[i].kmh < 40) {
                         color = 'yellow';
                     } else {
                         color = 'green';
@@ -57,10 +59,12 @@
                 var polyline;
                 var color;
                 for (var i = 0; i < data.length; i++) {
-                    if (data[i].kmh < 20) {
+                    if (data[i].kmh < 15) {
                         color = 'red';
-                    } else if (data[i].kmh < 40) {
+                    } else if (data[i].kmh < 30) {
                         color = 'orange';
+                    } else if (data[i].kmh < 40) {
+                        color = 'yellow';
                     } else {
                         color = 'green';
                     }

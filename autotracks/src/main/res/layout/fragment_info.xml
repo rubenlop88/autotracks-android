@@ -46,6 +46,11 @@
 
         <TextView
             style="@style/InfoLeyendaTextView"
+            android:drawableLeft="@drawable/circle_yellow"
+            android:text="@string/info_leyendas_descripcion_amarillo" />
+
+        <TextView
+            style="@style/InfoLeyendaTextView"
             android:drawableLeft="@drawable/circle_green"
             android:text="@string/info_leyendas_descripcion_verde" />
 
