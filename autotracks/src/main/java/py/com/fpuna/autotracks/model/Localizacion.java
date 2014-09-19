@@ -19,6 +19,7 @@ public class Localizacion {
     @Expose private double latitud;
     @Expose private double longitud;
     @Expose private double altitud;
+    @Expose private float exactitud;
     @Expose private float direccion;
     @Expose private float velocidad;
     @Expose private long fecha;
@@ -32,6 +33,7 @@ public class Localizacion {
         this.latitud = location.getLatitude();
         this.longitud = location.getLongitude();
         this.altitud = location.getAltitude();
+        this.exactitud = location.getAccuracy();
         this.direccion = location.getBearing();
         this.velocidad = location.getSpeed();
         this.fecha = location.getTime();
@@ -84,6 +86,14 @@ public class Localizacion {
 
     public void setAltitud(double altitud) {
         this.altitud = altitud;
+    }
+
+    public float getExactitud() {
+        return exactitud;
+    }
+
+    public void setExactitud(float exactitud) {
+        this.exactitud = exactitud;
     }
 
     public float getDireccion() {

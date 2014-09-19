@@ -41,6 +41,7 @@ public class AutotracksContract {
         String LATITUD = "latitud";
         String LONGITUD = "longitud";
         String ALTITUD = "altitud";
+        String EXACTITUD = "exactitud";
         String DIRECCION = "direccion";
         String VELOCIDAD = "velocidad";
         String FECHA = "fecha";
