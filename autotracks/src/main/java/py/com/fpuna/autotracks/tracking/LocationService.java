@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
-import android.preference.PreferenceManager;
 
 import com.google.android.gms.location.LocationClient;
 
@@ -22,8 +21,9 @@ public class LocationService extends IntentService {
     private static final String KEY_LAST_LOCATION_LONGITUDE = "key_last_location_longitude";
     private static final String KEY_LAST_LOCATION_TIME = "key_las_location_time";
 
-    private static final float MIN_DISTANCE_METTERS = 50;
-    private static final double MAX_SPEED_METTERS_PER_SECOND = 140 / 3.6;
+    private static final float MIN_DISTANCE_METERS = 50;
+    private static final double MAX_SPEED_METERS_PER_SECOND = 140 / 3.6;
+    private static final float ACCURACY_LIMIT = 200;
 
     private Context mContext;
     private SharedPreferences mPreferences;
@@ -69,8 +69,10 @@ public class LocationService extends IntentService {
         Location.distanceBetween(getLastLatitude(), getLastLongitude(), location.getLatitude(), location.getLongitude(), results);
         float distanceInMeters = results[0];
         long timeInSeconds = (location.getTime() - getLasTime()) / 1000;
-        double speedInMettersPerSecond = distanceInMeters / timeInSeconds;
-        return distanceInMeters > MIN_DISTANCE_METTERS && speedInMettersPerSecond < MAX_SPEED_METTERS_PER_SECOND;
+        double speedInMetersPerSecond = distanceInMeters / timeInSeconds;
+        return distanceInMeters > MIN_DISTANCE_METERS
+                && speedInMetersPerSecond < MAX_SPEED_METERS_PER_SECOND
+                && location.getAccuracy() < ACCURACY_LIMIT ;
     }
 
     private boolean isActivityRecognitionUpdatesStarted() {
