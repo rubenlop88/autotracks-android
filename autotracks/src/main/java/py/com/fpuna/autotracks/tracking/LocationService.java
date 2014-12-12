@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 
-import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.FusedLocationProviderApi;
 
 import py.com.fpuna.autotracks.Constants;
 import py.com.fpuna.autotracks.model.Localizacion;
@@ -44,7 +44,7 @@ public class LocationService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (isActivityRecognitionUpdatesStarted()) {
             if (isLocationUpdatesStarted()) {
-                Location location = intent.getExtras().getParcelable(LocationClient.KEY_LOCATION_CHANGED);
+                Location location = intent.getExtras().getParcelable(FusedLocationProviderApi.KEY_LOCATION_CHANGED);
                 if (location != null) {
                     saveLocation(location);
                 }

@@ -6,12 +6,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
-import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
 import py.com.fpuna.autotracks.Constants;
 import py.com.fpuna.autotracks.model.Ruta;
@@ -20,8 +20,8 @@ import py.com.fpuna.autotracks.provider.AutotracksContract.Rutas;
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 public class LocationController implements
-        GooglePlayServicesClient.ConnectionCallbacks,
-        GooglePlayServicesClient.OnConnectionFailedListener {
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     private enum Operation {
         START, STOP
@@ -31,13 +31,19 @@ public class LocationController implements
 
     private Context mContext;
     private SharedPreferences mPreferences;
-    private LocationClient mClient;
+    private FusedLocationProviderApi mClient;
+    private GoogleApiClient mGClient;
     private Operation operation;
 
     public LocationController(Context context) {
         this.mPreferences = context.getSharedPreferences("py.com.fpuna.autotracks_preferences",
                 Context.MODE_PRIVATE);
-        this.mClient = new LocationClient(context, this, this);
+        this.mGClient = new GoogleApiClient.Builder(context)
+                .addApi(LocationServices.API).addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+        this.mClient = LocationServices.FusedLocationApi;
+//        this.mClient = new LocationClient(context, this, this);
         this.mContext = context.getApplicationContext();
     }
 
@@ -45,21 +51,21 @@ public class LocationController implements
     public void onConnected(Bundle bundle) {
         switch (operation) {
             case START:
-                mClient.requestLocationUpdates(getLocationRequest(), getPendingIntent());
+                mClient.requestLocationUpdates(mGClient, getLocationRequest(), getPendingIntent());
                 mPreferences.edit().putBoolean(Constants.KEY_LOCATION_UPDATES_STARTED, true).commit();
                 startNewTrack();
                 break;
             case STOP:
-                mClient.removeLocationUpdates(getPendingIntent());
+                mClient.removeLocationUpdates(mGClient, getPendingIntent());
                 mPreferences.edit().putBoolean(Constants.KEY_LOCATION_UPDATES_STARTED, false).commit();
                 endCurrentTrack();
                 break;
         }
-        mClient.disconnect();
+        mGClient.disconnect();
     }
 
     @Override
-    public void onDisconnected() {
+    public void onConnectionSuspended(int i) {
     }
 
     @Override
@@ -68,12 +74,12 @@ public class LocationController implements
 
     public void startLocationUpdates() {
         operation = Operation.START;
-        mClient.connect();
+        mGClient.connect();
     }
 
     public void stopLocationUpdates() {
         operation = Operation.STOP;
-        mClient.connect();
+        mGClient.connect();
     }
 
     private PendingIntent getPendingIntent() {

@@ -18,11 +18,10 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import com.bugsense.trace.BugSenseHandler;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,19 +30,18 @@ import py.com.fpuna.autotracks.tracking.ActivityRecognitionController;
 import py.com.fpuna.autotracks.tracking.AlarmReceiver;
 
 public class MainActivity extends ActionBarActivity implements
-        GooglePlayServicesClient.ConnectionCallbacks,
-        GooglePlayServicesClient.OnConnectionFailedListener {
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener  {
 
     private static String TAG = MainActivity.class.getSimpleName();
     private SharedPreferences mPreferences;
     private ActivityRecognitionController mActivityRecognitionController;
     private WebView mWebView;
-    private LocationClient locationclient;
+    private GoogleApiClient gApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BugSenseHandler.initAndStartSession(this, "2915cd16");
         setContentView(R.layout.activity_main);
         mWebView = (WebView) findViewById(R.id.webView);
         mWebView.setWebViewClient(new WebViewClient() {
@@ -101,8 +99,11 @@ public class MainActivity extends ActionBarActivity implements
     private void checkCurrentLocation() {
         int resp = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         if (resp == ConnectionResult.SUCCESS) {
-            locationclient = new LocationClient(this, this, this);
-            locationclient.connect();
+            gApiClient = new GoogleApiClient.Builder(this)
+                    .addApi(LocationServices.API).addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .build();
+            gApiClient.connect();
         } else {
             Toast.makeText(this, "No se encontró Google Play Services en el dispositivo",
                     Toast.LENGTH_LONG).show();
@@ -166,17 +167,17 @@ public class MainActivity extends ActionBarActivity implements
     @Override
     public void onConnected(Bundle bundle) {
         Log.i(TAG, "Location client connected");
-        Location loc = locationclient.getLastLocation();
+        Location loc = LocationServices.FusedLocationApi.getLastLocation(gApiClient);
         if (loc != null) {
             mWebView.loadUrl("javascript:centrarMapa(" + loc.getLatitude() + ","
                     + loc.getLongitude() + ");");
         }
-        locationclient.disconnect();
+        gApiClient.disconnect();
     }
 
     @Override
-    public void onDisconnected() {
-        Log.i(TAG, "Location client Disconnected");
+    public void onConnectionSuspended(int i) {
+        Log.i(TAG, "Location client Suspended");
     }
 
     @Override
