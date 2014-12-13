@@ -21,7 +21,7 @@ public class SettingsActivity extends PreferenceActivity  {
     private void setupSimplePreferencesScreen() {
         addPreferencesFromResource(R.xml.pref_general);
         bindPreferenceSummaryToValue(findPreference(Constants.KEY_RECOGNITION_INTERVAL));
-        bindPreferenceSummaryToValue(findPreference(Constants.KEY_RECOGNITION_INTERVAL));
+        bindPreferenceSummaryToValue(findPreference(Constants.KEY_RECOGNITION_TOLERANCE));
     }
 
     private void bindPreferenceSummaryToValue(Preference preference) {
