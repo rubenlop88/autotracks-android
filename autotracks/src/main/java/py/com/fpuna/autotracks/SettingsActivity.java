@@ -6,7 +6,11 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 
-public class SettingsActivity extends PreferenceActivity {
+import py.com.fpuna.autotracks.tracking.ActivityRecognitionController;
+
+public class SettingsActivity extends PreferenceActivity  {
+
+    private ActivityRecognitionController mActivityRecognitionController;
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -16,11 +20,11 @@ public class SettingsActivity extends PreferenceActivity {
 
     private void setupSimplePreferencesScreen() {
         addPreferencesFromResource(R.xml.pref_general);
-        bindPreferenceSummaryToValue(findPreference("activity_recognition_interval"));
-        bindPreferenceSummaryToValue(findPreference("activity_recognition_tolerance"));
+        bindPreferenceSummaryToValue(findPreference(Constants.KEY_RECOGNITION_INTERVAL));
+        bindPreferenceSummaryToValue(findPreference(Constants.KEY_RECOGNITION_INTERVAL));
     }
 
-    private static void bindPreferenceSummaryToValue(Preference preference) {
+    private void bindPreferenceSummaryToValue(Preference preference) {
         preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
         sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
                 PreferenceManager
@@ -33,7 +37,7 @@ public class SettingsActivity extends PreferenceActivity {
         return false;
     }
 
-    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
+    private Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
             String stringValue = value.toString();
@@ -44,8 +48,14 @@ public class SettingsActivity extends PreferenceActivity {
             } else {
                 preference.setSummary(stringValue);
             }
+            startActivityRecognition();
             return true;
         }
     };
+
+    private void startActivityRecognition() {
+        mActivityRecognitionController = new ActivityRecognitionController(this);
+        mActivityRecognitionController.restartActivityRecognitionUpdates();
+    }
 
 }

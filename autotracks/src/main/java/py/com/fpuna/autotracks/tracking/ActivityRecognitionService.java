@@ -14,7 +14,8 @@ public class ActivityRecognitionService extends IntentService  {
 
     private static final String KEY_WAS_MOVING = "was_moving";
     private static final String KEY_DETECTION_TIME = "detection_time";
-    public static final int MIN_ELAPSED_TIME_MILLIS = 10 * 60 * 1000; // 10 minutos
+
+    private static final String DEFAULT_TOLERANCE = "5"; // 5 minutos
 
     private SharedPreferences mPreferences;
     private LocationController mLocationController;
@@ -27,8 +28,7 @@ public class ActivityRecognitionService extends IntentService  {
     public void onCreate() {
         super.onCreate();
         Context context = getApplicationContext();
-        mPreferences = context.getSharedPreferences("py.com.fpuna.autotracks_preferences",
-                Context.MODE_PRIVATE);
+        mPreferences = context.getSharedPreferences("py.com.fpuna.autotracks_preferences", Context.MODE_PRIVATE);
         mLocationController = new LocationController(context);
     }
 
@@ -57,7 +57,8 @@ public class ActivityRecognitionService extends IntentService  {
         if (wasMoving()) {
             long lastDetectionTime = getDetectionTimeMillis();
             long elapsedTime = currentTime - lastDetectionTime;
-            if (elapsedTime < MIN_ELAPSED_TIME_MILLIS) {
+            long tolerance = getToleranceMillis();
+            if (elapsedTime < tolerance) {
                 return true;
             }
         }
@@ -104,6 +105,11 @@ public class ActivityRecognitionService extends IntentService  {
 
     private boolean isActivityRecognitionUpdatesStarted() {
         return mPreferences.getBoolean(Constants.KEY_ACTIVITY_UPDATES_STARTED, false);
+    }
+
+    public long getToleranceMillis() {
+        String toleranceInMinutes = mPreferences.getString(Constants.KEY_RECOGNITION_TOLERANCE, DEFAULT_TOLERANCE);
+        return Long.valueOf(toleranceInMinutes) * 60 * 1000;
     }
 
 }
