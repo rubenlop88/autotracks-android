@@ -12,45 +12,65 @@
 
         <TextView
             style="@style/InfoTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/info_que_es" />
 
         <TextView
             style="@style/InfoDescTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/info_que_es_descripcion" />
 
         <TextView
             style="@style/InfoTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/info_como_funciona" />
 
         <TextView
             style="@style/InfoDescTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/info_como_funciona_descripcion" />
 
         <TextView
             style="@style/InfoTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/info_leyendas" />
 
         <TextView
             style="@style/InfoDescTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/info_leyendas_descripcion" />
 
         <TextView
             style="@style/InfoLeyendaTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:drawableLeft="@drawable/circle_red"
             android:text="@string/info_leyendas_descripcion_rojo" />
 
         <TextView
             style="@style/InfoLeyendaTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:drawableLeft="@drawable/circle_orange"
             android:text="@string/info_leyendas_descripcion_naranja" />
 
         <TextView
             style="@style/InfoLeyendaTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:drawableLeft="@drawable/circle_yellow"
             android:text="@string/info_leyendas_descripcion_amarillo" />
 
         <TextView
             style="@style/InfoLeyendaTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:drawableLeft="@drawable/circle_green"
             android:text="@string/info_leyendas_descripcion_verde" />
 

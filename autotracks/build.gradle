@@ -5,7 +5,7 @@ android {
     buildToolsVersion "21.1.1"
 
     defaultConfig {
-        minSdkVersion 9
+        minSdkVersion 10
         targetSdkVersion 21
         versionCode 10
         versionName "1.0.2"
@@ -23,9 +23,6 @@ repositories {
     maven {
         url "http://repo.commonsware.com"
     }
-    maven {
-        url "http://www.bugsense.com/gradle/"
-    }
 }
 
 dependencies {
@@ -36,4 +33,5 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:1.5.4'
     compile 'nl.qbusict:cupboard:2.0.0'
     compile 'com.commonsware.cwac:wakeful:1.0.1'
+    compile 'com.jpardogo.materialtabstrip:library:1.0.6'
 }

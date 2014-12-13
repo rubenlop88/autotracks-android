@@ -12,30 +12,44 @@
 
         <TextView
             style="@style/InfoTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/autores_proyecto" />
 
         <TextView
             style="@style/InfoDescTextView"
-            android:text="@string/autores_proyecto_descripcion"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/autores_proyecto_descripcion" />
 
         <TextView
             style="@style/InfoTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/autores_desarrolladores" />
 
         <TextView
             style="@style/InfoAutoresTextView"
-            android:text="@string/autores_desarrolladores_acampuzano"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/autores_desarrolladores_acampuzano" />
 
         <TextView
             style="@style/InfoAutoresTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/autores_desarrolladores_rlopez" />
 
         <TextView
             style="@style/InfoTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/autores_tutor" />
 
         <TextView
             style="@style/InfoAutoresTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/autores_tutor_jlima" />
 
     </LinearLayout>
