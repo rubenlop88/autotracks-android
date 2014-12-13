@@ -16,9 +16,7 @@ import py.com.fpuna.autotracks.Constants;
 
 public class ActivityRecognitionController implements
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        GooglePlayServicesClient.ConnectionCallbacks,
-        GooglePlayServicesClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener {
 
     public static final String DEFAULT_INTERVAL = "15"; // 15 segundos
 
@@ -67,10 +65,6 @@ public class ActivityRecognitionController implements
     @Override
     public void onConnectionSuspended(int i) {
 
-    }
-
-    @Override
-    public void onDisconnected() {
     }
 
     @Override
