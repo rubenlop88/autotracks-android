@@ -20,11 +20,11 @@ public class ActivityRecognitionController implements
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener {
 
-    private enum Operation {
-        START, STOP
-    }
+    public static final String DEFAULT_INTERVAL = "15"; // 15 segundos
 
-    private static final int INTERVAL_IN_MILLIS = 15 * 1000; // 15 segundos
+    private enum Operation {
+        START, STOP, RESTART
+    }
 
     private Context mContext;
     private SharedPreferences mPreferences;
@@ -33,11 +33,11 @@ public class ActivityRecognitionController implements
     private Operation operation;
 
     public ActivityRecognitionController(Context context) {
-        this.mPreferences = context.getSharedPreferences("py.com.fpuna.autotracks_preferences",
-                Context.MODE_PRIVATE);
+        this.mPreferences = context.getSharedPreferences("py.com.fpuna.autotracks_preferences", Context.MODE_PRIVATE);
         this.mGClient = new GoogleApiClient.Builder(context)
-                .addApi(ActivityRecognition.API).addConnectionCallbacks(this)
+                .addApi(ActivityRecognition.API)
                 .addOnConnectionFailedListener(this)
+                .addConnectionCallbacks(this)
                 .build();
         this.mClient = ActivityRecognition.ActivityRecognitionApi;
         this.mContext = context.getApplicationContext();
@@ -46,8 +46,13 @@ public class ActivityRecognitionController implements
     @Override
     public void onConnected(Bundle bundle) {
         switch (operation) {
+            case RESTART:
+                if (isActivityRecognitionUpdatesStarted()) {
+                    mClient.removeActivityUpdates(mGClient, getPendingIntent());
+                }
             case START:
-                mClient.requestActivityUpdates(mGClient, INTERVAL_IN_MILLIS, getPendingIntent());
+                int interval = getIntervalMillis();
+                mClient.requestActivityUpdates(mGClient, interval, getPendingIntent());
                 mPreferences.edit().putBoolean(Constants.KEY_ACTIVITY_UPDATES_STARTED, true).commit();
                 break;
             case STOP:
@@ -57,6 +62,7 @@ public class ActivityRecognitionController implements
         }
         mGClient.disconnect();
     }
+
 
     @Override
     public void onConnectionSuspended(int i) {
@@ -71,6 +77,11 @@ public class ActivityRecognitionController implements
     public void onConnectionFailed(ConnectionResult connectionResult) {
     }
 
+    public void restartActivityRecognitionUpdates() {
+        operation = Operation.RESTART;
+        mGClient.connect();
+    }
+
     public void startActivityRecognitionUpdates() {
         operation = Operation.START;
         mGClient.connect();
@@ -81,9 +92,18 @@ public class ActivityRecognitionController implements
         mGClient.connect();
     }
 
+    public boolean isActivityRecognitionUpdatesStarted() {
+        return mPreferences.getBoolean(Constants.KEY_ACTIVITY_UPDATES_STARTED, false);
+    }
+
     private PendingIntent getPendingIntent() {
         Intent intent = new Intent(mContext, ActivityRecognitionService.class);
         return PendingIntent.getService(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private int getIntervalMillis() {
+        String intervalInSeconds = mPreferences.getString(Constants.KEY_RECOGNITION_INTERVAL, DEFAULT_INTERVAL);
+        return Integer.valueOf(intervalInSeconds) * 1000;
     }
 
 }
