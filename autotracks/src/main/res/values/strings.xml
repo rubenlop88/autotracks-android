@@ -8,6 +8,7 @@
     <string name="action_share">Compartir</string>
     <string name="action_about">Información</string>
     <string name="action_settings">Configuración</string>
+    <string name="action_rutas">Rutas</string>
 
     <!-- Texto para compartir en redes sociales -->
     <string name="share_intent_text">

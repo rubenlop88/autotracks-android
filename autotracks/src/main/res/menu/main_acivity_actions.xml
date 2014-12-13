@@ -20,4 +20,8 @@
         android:title="@string/action_settings"
         autotracks:showAsAction="never" />
 
+    <item android:id="@+id/action_rutas"
+        android:title="@string/action_rutas"
+        autotracks:showAsAction="never" />
+
 </menu>
