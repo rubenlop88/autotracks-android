@@ -5,39 +5,20 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import py.com.fpuna.autotracks.tracking.ActivityRecognitionController;
 
 public class SettingsActivity extends PreferenceActivity  {
 
-    private ActivityRecognitionController mActivityRecognitionController;
+    private Preference.OnPreferenceChangeListener mListener = new Preference.OnPreferenceChangeListener() {
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        setupSimplePreferencesScreen();
-    }
+        private ActivityRecognitionController mActivityRecognitionController;
 
-    private void setupSimplePreferencesScreen() {
-        addPreferencesFromResource(R.xml.pref_general);
-        bindPreferenceSummaryToValue(findPreference(Constants.KEY_RECOGNITION_INTERVAL));
-        bindPreferenceSummaryToValue(findPreference(Constants.KEY_RECOGNITION_TOLERANCE));
-    }
-
-    private void bindPreferenceSummaryToValue(Preference preference) {
-        preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
-        sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
-                PreferenceManager
-                        .getDefaultSharedPreferences(preference.getContext())
-                        .getString(preference.getKey(), ""));
-    }
-
-    @Override
-    public boolean onIsMultiPane() {
-        return false;
-    }
-
-    private Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
             String stringValue = value.toString();
@@ -51,11 +32,56 @@ public class SettingsActivity extends PreferenceActivity  {
             startActivityRecognition();
             return true;
         }
+
+        private void startActivityRecognition() {
+            mActivityRecognitionController = new ActivityRecognitionController(SettingsActivity.this);
+            mActivityRecognitionController.restartActivityRecognitionUpdates();
+        }
+
     };
 
-    private void startActivityRecognition() {
-        mActivityRecognitionController = new ActivityRecognitionController(this);
-        mActivityRecognitionController.restartActivityRecognitionUpdates();
+    @Override
+    public void setContentView(int layoutResId) {
+        ViewGroup contentView = (ViewGroup) LayoutInflater.from(this).inflate(
+                R.layout.activity_settings,
+                new LinearLayout(this),
+                false);
+
+        Toolbar toolbar = (Toolbar) contentView.findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_action_navigation_arrow_back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        toolbar.setTitle(getTitle());
+
+        ViewGroup contentWrapper = (ViewGroup) contentView.findViewById(R.id.content_wrapper);
+        LayoutInflater.from(this).inflate(layoutResId, contentWrapper, true);
+
+        getWindow().setContentView(contentView);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        addPreferencesFromResource(R.xml.pref_general);
+        bindPreference(findPreference(Constants.KEY_RECOGNITION_INTERVAL));
+        bindPreference(findPreference(Constants.KEY_RECOGNITION_TOLERANCE));
+    }
+
+    private void bindPreference(Preference preference) {
+        preference.setOnPreferenceChangeListener(mListener);
+        mListener.onPreferenceChange(preference, PreferenceManager
+                .getDefaultSharedPreferences(preference.getContext())
+                .getString(preference.getKey(), ""));
     }
 
 }

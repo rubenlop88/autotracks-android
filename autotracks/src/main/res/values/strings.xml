@@ -86,7 +86,7 @@
 
     <!-- Configuraciones -->
 
-    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_settings">Configuración</string>
 
     <!-- Intervalo de tiempo para el reconocimiento de actividad -->
 
