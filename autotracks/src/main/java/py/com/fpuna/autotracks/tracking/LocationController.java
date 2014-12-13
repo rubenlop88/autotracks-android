@@ -1,6 +1,7 @@
 package py.com.fpuna.autotracks.tracking;
 
 import android.app.PendingIntent;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -43,7 +44,6 @@ public class LocationController implements
                 .addOnConnectionFailedListener(this)
                 .build();
         this.mClient = LocationServices.FusedLocationApi;
-//        this.mClient = new LocationClient(context, this, this);
         this.mContext = context.getApplicationContext();
     }
 
@@ -101,6 +101,10 @@ public class LocationController implements
     }
 
     private void endCurrentTrack() {
+        ContentValues values = new ContentValues();
+        values.put(Rutas._ID, Long.valueOf(mPreferences.getString(Constants.KEY_CURRENT_TRACK_ID, null)));
+        values.put(Rutas.FIN, System.currentTimeMillis());
+        cupboard().withContext(mContext).update(Rutas.CONTENT_URI, values);
         mPreferences.edit().putString(Constants.KEY_CURRENT_TRACK_ID, null).commit();
     }
 

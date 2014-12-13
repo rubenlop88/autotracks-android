@@ -15,6 +15,7 @@ public class Ruta {
     @Expose private long fecha;
     @Expose @Ignore private List<Localizacion> localizaciones; // @Ignore para que Cupboard ignore este campo
     @Expose @Column("server_id") private Long serverId; // @Column para que Cubpard cree el campo server_id en lugar de serverId
+    private long fin;
 
     public Ruta() {
     }
@@ -37,6 +38,14 @@ public class Ruta {
 
     public void setFecha(long fecha) {
         this.fecha = fecha;
+    }
+
+    public long getFin() {
+        return fin;
+    }
+
+    public void setFin(long fin) {
+        this.fin = fin;
     }
 
     public List<Localizacion> getLocalizaciones() {

@@ -15,9 +15,9 @@ public class AutotracksDatabase extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "autotracks.db";
 
-    private static final int VER_2_0 = 2;
+    private static final int VERSION = 3;
 
-    private static final int DATABASE_VERSION = VER_2_0;
+    private static final int DATABASE_VERSION = VERSION;
 
     static {
         CupboardFactory.setCupboard(new CupboardBuilder().useAnnotations().build());

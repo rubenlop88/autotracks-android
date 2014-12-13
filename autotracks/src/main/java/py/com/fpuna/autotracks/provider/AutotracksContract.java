@@ -33,6 +33,7 @@ public class AutotracksContract {
     interface RutaColumns {
         String FECHA = "fecha";
         String SERVER_ID = "server_id";
+        String FIN = "fin";
     }
 
     interface LocalizacionesColumns {
