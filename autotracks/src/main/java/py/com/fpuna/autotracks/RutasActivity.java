@@ -28,6 +28,8 @@ public class RutasActivity extends ActionBarActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Iterable<Ruta> rutas = cupboard().withContext(getApplicationContext())
                 .query(AutotracksContract.Rutas.CONTENT_URI, Ruta.class)
                 .orderBy(AutotracksContract.Rutas.FECHA)
