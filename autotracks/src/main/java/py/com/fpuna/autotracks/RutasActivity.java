@@ -5,6 +5,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -17,15 +18,15 @@ import py.com.fpuna.autotracks.provider.AutotracksContract;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
-/**
- * Created by Alfredo on 13/12/2014.
- */
 public class RutasActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rutas);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         Iterable<Ruta> rutas = cupboard().withContext(getApplicationContext())
                 .query(AutotracksContract.Rutas.CONTENT_URI, Ruta.class)
