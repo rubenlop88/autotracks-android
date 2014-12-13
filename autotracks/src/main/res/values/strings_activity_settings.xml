@@ -1,0 +1,29 @@
+<resources>
+    <string name="title_activity_settings">Settings</string>
+
+
+    <string name="pref_title_activity_recognition_interval">Intervalo de Reconocimiento de Actividad</string>
+    <string-array name="pref_activity_recognition_interval_list_titles">
+        <item>Always</item>
+        <item>When possible</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_activity_recognition_interval_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+    <string name="pref_title_activity_recognition_tolerance">Tolerancia de Reconocimiento de Actividad</string>
+    <string-array name="pref_activity_recognition_tolerance_list_titles">
+        <item>Always</item>
+        <item>When possible</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_activity_recognition_tolerance_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+</resources>
