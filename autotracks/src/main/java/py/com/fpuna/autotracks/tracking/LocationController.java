@@ -25,10 +25,10 @@ public class LocationController implements
         GoogleApiClient.OnConnectionFailedListener {
 
     private enum Operation {
-        START, STOP
+        START, STOP, RESTART
     }
 
-    private static final int INTERVAL_IN_MILLIS = 60 * 1000; // 60 segundos
+    private static final String DEFAULT_INTREVAL = "60"; // 60 segundos
 
     private Context mContext;
     private SharedPreferences mPreferences;
@@ -50,6 +50,12 @@ public class LocationController implements
     @Override
     public void onConnected(Bundle bundle) {
         switch (operation) {
+            case RESTART:
+                if (isLocationUpdatesStarted()) {
+                    mClient.removeLocationUpdates(mGClient, getPendingIntent());
+                    mClient.requestLocationUpdates(mGClient, getLocationRequest(), getPendingIntent());
+                }
+                break;
             case START:
                 mClient.requestLocationUpdates(mGClient, getLocationRequest(), getPendingIntent());
                 mPreferences.edit().putBoolean(Constants.KEY_LOCATION_UPDATES_STARTED, true).commit();
@@ -72,6 +78,11 @@ public class LocationController implements
     public void onConnectionFailed(ConnectionResult connectionResult) {
     }
 
+    public void restartLocationUpdates() {
+        operation = Operation.RESTART;
+        mGClient.connect();
+    }
+
     public void startLocationUpdates() {
         operation = Operation.START;
         mGClient.connect();
@@ -88,10 +99,16 @@ public class LocationController implements
     }
 
     private LocationRequest getLocationRequest() {
+        long interval = getIntervalMillis();
         return new LocationRequest()
-                .setInterval(INTERVAL_IN_MILLIS)
-                .setFastestInterval(INTERVAL_IN_MILLIS)
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setFastestInterval(interval)
+                .setInterval(interval);
+    }
+
+    private long getIntervalMillis() {
+        String interval = mPreferences.getString(Constants.KEY_LOCATION_UPDATES_INTERVAL, DEFAULT_INTREVAL);
+        return Long.valueOf(interval) * 1000;
     }
 
     private void startNewTrack() {
@@ -106,6 +123,10 @@ public class LocationController implements
         values.put(Rutas.FIN, System.currentTimeMillis());
         cupboard().withContext(mContext).update(Rutas.CONTENT_URI, values);
         mPreferences.edit().putString(Constants.KEY_CURRENT_TRACK_ID, null).commit();
+    }
+
+    public boolean isLocationUpdatesStarted() {
+        return mPreferences.getBoolean(Constants.KEY_LOCATION_UPDATES_STARTED, false);
     }
 
 }

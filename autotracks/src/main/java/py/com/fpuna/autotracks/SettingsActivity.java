@@ -1,5 +1,6 @@
 package py.com.fpuna.autotracks;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -12,33 +13,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import py.com.fpuna.autotracks.tracking.ActivityRecognitionController;
+import py.com.fpuna.autotracks.tracking.LocationController;
 
 public class SettingsActivity extends PreferenceActivity  {
 
-    private Preference.OnPreferenceChangeListener mListener = new Preference.OnPreferenceChangeListener() {
-
-        private ActivityRecognitionController mActivityRecognitionController;
-
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object value) {
-            String stringValue = value.toString();
-            if (preference instanceof ListPreference) {
-                ListPreference listPreference = (ListPreference) preference;
-                int index = listPreference.findIndexOfValue(stringValue);
-                preference.setSummary(index >= 0 ? listPreference.getEntries()[index] : null);
-            } else {
-                preference.setSummary(stringValue);
-            }
-            startActivityRecognition();
-            return true;
-        }
-
-        private void startActivityRecognition() {
-            mActivityRecognitionController = new ActivityRecognitionController(SettingsActivity.this);
-            mActivityRecognitionController.restartActivityRecognitionUpdates();
-        }
-
-    };
+    private Preference.OnPreferenceChangeListener mListener;
 
     @Override
     public void setContentView(int layoutResId) {
@@ -72,9 +51,11 @@ public class SettingsActivity extends PreferenceActivity  {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+        mListener  = new PreferenceChangeListener(this);
         addPreferencesFromResource(R.xml.pref_general);
         bindPreference(findPreference(Constants.KEY_RECOGNITION_INTERVAL));
         bindPreference(findPreference(Constants.KEY_RECOGNITION_TOLERANCE));
+        bindPreference(findPreference(Constants.KEY_LOCATION_UPDATES_INTERVAL));
     }
 
     private void bindPreference(Preference preference) {
@@ -84,4 +65,31 @@ public class SettingsActivity extends PreferenceActivity  {
                 .getString(preference.getKey(), ""));
     }
 
+    private class PreferenceChangeListener implements Preference.OnPreferenceChangeListener {
+
+        private ActivityRecognitionController mActivityRecognitionController;
+        private LocationController mLocationController;
+
+        public PreferenceChangeListener(Context context) {
+            mActivityRecognitionController = new ActivityRecognitionController(context);
+            mLocationController = new LocationController(context);
+        }
+
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object value) {
+            ListPreference listPreference = (ListPreference) preference;
+            int index = listPreference.findIndexOfValue(value.toString());
+            preference.setSummary(index >= 0 ? listPreference.getEntries()[index] : null);
+            String key = listPreference.getKey();
+            if (Constants.KEY_RECOGNITION_INTERVAL.equals(key) || Constants.KEY_RECOGNITION_TOLERANCE.equals(key)) {
+                mActivityRecognitionController.restartActivityRecognitionUpdates();
+            } else if (Constants.KEY_LOCATION_UPDATES_INTERVAL.equals(key)) {
+                if (mLocationController.isLocationUpdatesStarted()) {
+                    mLocationController.restartLocationUpdates();
+                }
+            }
+            return true;
+        }
+
+    }
 }

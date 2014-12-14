@@ -10,6 +10,11 @@ import com.google.android.gms.location.DetectedActivity;
 
 import py.com.fpuna.autotracks.Constants;
 
+import static com.google.android.gms.location.DetectedActivity.IN_VEHICLE;
+import static com.google.android.gms.location.DetectedActivity.ON_FOOT;
+import static com.google.android.gms.location.DetectedActivity.RUNNING;
+import static com.google.android.gms.location.DetectedActivity.WALKING;
+
 /**
  * Servicio que se encarga de manejar las actividades reconocidas.
  */
@@ -17,7 +22,6 @@ public class ActivityRecognitionService extends IntentService  {
 
     private static final String KEY_WAS_MOVING = "was_moving";
     private static final String KEY_DETECTION_TIME = "detection_time";
-
     private static final String DEFAULT_TOLERANCE = "10"; // 10 minutos
 
     private SharedPreferences mPreferences;
@@ -40,7 +44,7 @@ public class ActivityRecognitionService extends IntentService  {
         if (isActivityRecognitionUpdatesStarted()) {
             if (ActivityRecognitionResult.hasResult(intent)) {
                 ActivityRecognitionResult result = ActivityRecognitionResult.extractResult(intent);
-                boolean moving = isMoving(result);
+                boolean moving = true; //isMoving(result);
                 setMoving(moving);
                 if (moving) {
                     if (!isLocationUpdatesStarted()) {
@@ -62,40 +66,34 @@ public class ActivityRecognitionService extends IntentService  {
      *          <code>false</code> en caso contrario.
      */
     private boolean isMoving(ActivityRecognitionResult result) {
-        boolean retorno = false;
-        boolean isOnFoot = false;
         long currentTime = System.currentTimeMillis();
 
+        // obtenemos los datos de la actividad del usuario
         DetectedActivity mostProbableActivity = result.getMostProbableActivity();
-        switch (mostProbableActivity.getType()) {
-            case DetectedActivity.ON_FOOT:
-            case DetectedActivity.RUNNING:
-            case DetectedActivity.WALKING:
-                isOnFoot = mostProbableActivity.getConfidence() > 80;
-            case DetectedActivity.ON_BICYCLE:
-            case DetectedActivity.STILL:
-                break;
-            case DetectedActivity.IN_VEHICLE:
-                boolean isMoving = mostProbableActivity.getConfidence() > 80;
-                if (isMoving) {
-                    setDetectionTimeMillis(currentTime);
-                    retorno = true;
-                }
-                break;
-            default:
-                retorno = wasMoving();
+        int confidence = mostProbableActivity.getConfidence();
+        int type = mostProbableActivity.getType();
+
+        // si el usuario esta a pie detenemos inmediatamente el rastreo
+        if ((type == ON_FOOT || type == RUNNING || type == WALKING) && confidence > 80) {
+            return false;
         }
 
-        if (wasMoving() && !retorno && !isOnFoot) {
+        // si el usuario esta en vehiculo continuamos con el rastreo
+        if (type == IN_VEHICLE && confidence > 80) {
+            setDetectionTimeMillis(currentTime);
+            return true;
+        }
+
+        // si el usuario ya estaba en movimiento comprobamos que haya transcurrido
+        // un tiempo de tolerancia predefinido antes de detener el rastreo
+        if (wasMoving()) {
             long lastDetectionTime = getDetectionTimeMillis();
             long elapsedTime = currentTime - lastDetectionTime;
             long tolerance = getToleranceMillis();
-            if (elapsedTime < tolerance) {
-                retorno = true;
-            }
+            return elapsedTime < tolerance;
         }
 
-        return retorno;
+        return false;
     }
 
     /**
