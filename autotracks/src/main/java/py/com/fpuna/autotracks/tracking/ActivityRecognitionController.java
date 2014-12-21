@@ -32,13 +32,13 @@ public class ActivityRecognitionController implements
 
     public ActivityRecognitionController(Context context) {
         this.mPreferences = context.getSharedPreferences("py.com.fpuna.autotracks_preferences", Context.MODE_PRIVATE);
-        this.mGClient = new GoogleApiClient.Builder(context)
+        this.mContext = context.getApplicationContext();
+        this.mGClient = new GoogleApiClient.Builder(this.mContext)
                 .addApi(ActivityRecognition.API)
                 .addOnConnectionFailedListener(this)
                 .addConnectionCallbacks(this)
                 .build();
         this.mClient = ActivityRecognition.ActivityRecognitionApi;
-        this.mContext = context.getApplicationContext();
     }
 
     @Override

@@ -28,7 +28,7 @@ public class LocationController implements
         START, STOP, RESTART
     }
 
-    private static final String DEFAULT_INTREVAL = "60"; // 60 segundos
+    private static final String DEFAULT_INTERVAL = "60"; // 60 segundos
 
     private Context mContext;
     private SharedPreferences mPreferences;
@@ -39,12 +39,12 @@ public class LocationController implements
     public LocationController(Context context) {
         this.mPreferences = context.getSharedPreferences("py.com.fpuna.autotracks_preferences",
                 Context.MODE_PRIVATE);
-        this.mGClient = new GoogleApiClient.Builder(context)
+        this.mContext = context.getApplicationContext();
+        this.mGClient = new GoogleApiClient.Builder(this.mContext)
                 .addApi(LocationServices.API).addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
         this.mClient = LocationServices.FusedLocationApi;
-        this.mContext = context.getApplicationContext();
     }
 
     @Override
@@ -107,7 +107,7 @@ public class LocationController implements
     }
 
     private long getIntervalMillis() {
-        String interval = mPreferences.getString(Constants.KEY_LOCATION_UPDATES_INTERVAL, DEFAULT_INTREVAL);
+        String interval = mPreferences.getString(Constants.KEY_LOCATION_UPDATES_INTERVAL, DEFAULT_INTERVAL);
         return Long.valueOf(interval) * 1000;
     }
 

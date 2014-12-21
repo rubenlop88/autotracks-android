@@ -44,7 +44,7 @@ public class ActivityRecognitionService extends IntentService  {
         if (isActivityRecognitionUpdatesStarted()) {
             if (ActivityRecognitionResult.hasResult(intent)) {
                 ActivityRecognitionResult result = ActivityRecognitionResult.extractResult(intent);
-                boolean moving = true; //isMoving(result);
+                boolean moving = isMoving(result);
                 setMoving(moving);
                 if (moving) {
                     if (!isLocationUpdatesStarted()) {
