@@ -3,6 +3,7 @@ package py.com.fpuna.autotracks;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.LabeledIntent;
 import android.content.pm.PackageManager;
@@ -48,6 +49,9 @@ public class MainActivity extends ActionBarActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mPreferences = getSharedPreferences("py.com.fpuna.autotracks_preferences",
+                Context.MODE_PRIVATE);
+
         mWebView = (WebView) findViewById(R.id.webView);
         mWebView.setWebViewClient(new WebViewClient() {
             public void onPageFinished(WebView view, String url) {
@@ -56,7 +60,7 @@ public class MainActivity extends ActionBarActivity implements
         });
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.loadUrl("file:///android_asset/index.html");
-        if (!isActivityRecognitionUpdatesStarted() && isBatteryLevelOk()) {
+        if (isBatteryLevelOk() && !isActivityRecognitionUpdatesStarted()) {
             startActivityRecognition();
         }
         if (!AlarmReceiver.isAlarmSetUp(this)) {
@@ -102,8 +106,7 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     private boolean isActivityRecognitionUpdatesStarted() {
-        mPreferences = getSharedPreferences("py.com.fpuna.autotracks_preferences",
-                Context.MODE_PRIVATE);
+
         return mPreferences.getBoolean(Constants.KEY_ACTIVITY_UPDATES_STARTED, false);
     }
 
@@ -126,6 +129,22 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     private boolean isBatteryLevelOk() {
+        Intent batteryIntent = this.getApplicationContext().registerReceiver(null,
+                new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        int rawlevel = batteryIntent.getIntExtra("level", -1);
+        double scale = batteryIntent.getIntExtra("scale", -1);
+        double level = -1;
+        if (rawlevel >= 0 && scale > 0) {
+            level = rawlevel * 100 / scale;
+        }
+        if (level >= 20) {
+            mPreferences.edit().putBoolean(Constants.KEY_BATTERY_LEVEL_LOW, false).apply();
+            return true;
+        } else if (level <= 15 && level >= 0) {
+            mPreferences.edit().putBoolean(Constants.KEY_BATTERY_LEVEL_LOW, true).apply();
+            return true;
+        }
+
         return !mPreferences.getBoolean(Constants.KEY_BATTERY_LEVEL_LOW, false);
     }
 
