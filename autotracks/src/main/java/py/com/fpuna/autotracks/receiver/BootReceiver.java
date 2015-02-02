@@ -1,8 +1,11 @@
-package py.com.fpuna.autotracks.tracking;
+package py.com.fpuna.autotracks.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+
+import py.com.fpuna.autotracks.tracking.ActivityRecognitionController;
+import py.com.fpuna.autotracks.tracking.DataUploadAlarmReceiver;
 
 public class BootReceiver extends BroadcastReceiver {
 
@@ -16,7 +19,7 @@ public class BootReceiver extends BroadcastReceiver {
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
             mActivityRecognitionController = new ActivityRecognitionController(context);
             mActivityRecognitionController.startActivityRecognitionUpdates();
-            AlarmReceiver.setUpAlarm(context);
+            DataUploadAlarmReceiver.setUpAlarm(context);
         }
     }
 

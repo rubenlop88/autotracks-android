@@ -1,4 +1,4 @@
-package py.com.fpuna.autotracks;
+package py.com.fpuna.autotracks.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,16 +6,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class AuthFragment extends Fragment {
+import py.com.fpuna.autotracks.R;
 
-    public static AuthFragment newInstance() {
-        AuthFragment fragment = new AuthFragment();
+public class AuthorsFragment extends Fragment {
+
+    public static AuthorsFragment newInstance() {
+        AuthorsFragment fragment = new AuthorsFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
     }
 
-    public AuthFragment() {
+    public AuthorsFragment() {
     }
 
     @Override
@@ -25,7 +27,7 @@ public class AuthFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_auth, container, false);
+        return inflater.inflate(R.layout.fragment_authors, container, false);
     }
 
 }

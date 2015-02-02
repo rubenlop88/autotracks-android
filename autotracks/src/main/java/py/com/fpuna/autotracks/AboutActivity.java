@@ -11,17 +11,17 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.astuetz.PagerSlidingTabStrip;
 
+import py.com.fpuna.autotracks.fragment.AuthorsFragment;
+import py.com.fpuna.autotracks.fragment.InformationFragment;
+
 public class AboutActivity extends ActionBarActivity implements ActionBar.TabListener {
 
-    PagerSlidingTabStrip mPagerSlidingTabStrip;
-    SectionsPagerAdapter mSectionsPagerAdapter;
-    ViewPager mViewPager;
+    private PagerSlidingTabStrip mPagerSlidingTabStrip;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +65,9 @@ public class AboutActivity extends ActionBarActivity implements ActionBar.TabLis
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return InfoFragment.newInstance();
+                    return InformationFragment.newInstance();
                 case 1:
-                    return AuthFragment.newInstance();
+                    return AuthorsFragment.newInstance();
                 default:
                     return null;
             }

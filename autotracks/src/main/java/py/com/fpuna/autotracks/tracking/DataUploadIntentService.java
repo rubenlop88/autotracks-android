@@ -3,7 +3,6 @@ package py.com.fpuna.autotracks.tracking;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.Log;
 
@@ -12,7 +11,6 @@ import com.commonsware.cwac.wakeful.WakefulIntentService;
 import java.util.ArrayList;
 import java.util.List;
 
-import py.com.fpuna.autotracks.Constants;
 import py.com.fpuna.autotracks.WebService;
 import py.com.fpuna.autotracks.model.Localizacion;
 import py.com.fpuna.autotracks.model.Resultado;
@@ -22,20 +20,21 @@ import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 import py.com.fpuna.autotracks.provider.AutotracksContract.Localizaciones;
 import py.com.fpuna.autotracks.provider.AutotracksContract.Rutas;
+import py.com.fpuna.autotracks.util.PreferenceUtils;
 
-public class AlarmIntentService extends WakefulIntentService {
-    private static String TAG = AlarmIntentService.class.getSimpleName();
+public class DataUploadIntentService extends WakefulIntentService {
+
+    private static String TAG = DataUploadIntentService.class.getSimpleName();
 
     public static void startService(Context context) {
-        SharedPreferences mPreferences = context.getSharedPreferences(
-                "py.com.fpuna.autotracks_preferences", Context.MODE_PRIVATE);
-        if (!mPreferences.getBoolean(Constants.KEY_BATTERY_LEVEL_LOW, false)) {
-            WakefulIntentService.sendWakefulWork(context, AlarmIntentService.class);
+        PreferenceUtils mPreferenceUtils = new PreferenceUtils(context);
+        if (mPreferenceUtils.isBatteryLevelOk()) {
+            WakefulIntentService.sendWakefulWork(context, DataUploadIntentService.class);
         }
     }
 
-    public AlarmIntentService() {
-        super("AlarmIntentService");
+    public DataUploadIntentService() {
+        super("DataUploadIntentService");
     }
 
     @Override

@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context="py.com.fpuna.autotracks.InfoFragment">
+    tools:context="py.com.fpuna.autotracks.fragment.InformationFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

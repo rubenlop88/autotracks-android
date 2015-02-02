@@ -13,12 +13,20 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import py.com.fpuna.autotracks.tracking.ActivityRecognitionController;
-import py.com.fpuna.autotracks.tracking.LocationController;
+import py.com.fpuna.autotracks.tracking.LocationUpdatesController;
+import py.com.fpuna.autotracks.util.PreferenceUtils;
+
+import static py.com.fpuna.autotracks.util.PreferenceUtils.KEY_LOCATION_UPDATES_INTERVAL;
+import static py.com.fpuna.autotracks.util.PreferenceUtils.KEY_ACTIVITY_RECOGNITION_INTERVAL;
+import static py.com.fpuna.autotracks.util.PreferenceUtils.KEY_ACTIVITY_RECOGNITION_TOLERANCE;
 
 public class SettingsActivity extends PreferenceActivity  {
 
-    private Preference.OnPreferenceChangeListener mListener;
+    private PreferenceUtils mPreferenceUtils;
+    private Preference.OnPreferenceChangeListener mPreferencesListener;
 
+    // alambre para mostrar un toolbar en este PreferenceActivity.
+    // ver  http://stackoverflow.com/questions/17849193/how-to-add-action-bar-from-support-library-into-preferenceactivity
     @Override
     public void setContentView(int layoutResId) {
         ViewGroup contentView = (ViewGroup) LayoutInflater.from(this).inflate(
@@ -51,16 +59,17 @@ public class SettingsActivity extends PreferenceActivity  {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mListener  = new PreferenceChangeListener(this);
+        mPreferenceUtils = new PreferenceUtils(this);
+        mPreferencesListener = new PreferenceChangeListener(this);
         addPreferencesFromResource(R.xml.pref_general);
-        bindPreference(findPreference(Constants.KEY_RECOGNITION_INTERVAL));
-        bindPreference(findPreference(Constants.KEY_RECOGNITION_TOLERANCE));
-        bindPreference(findPreference(Constants.KEY_LOCATION_UPDATES_INTERVAL));
+        bindPreference(findPreference(KEY_ACTIVITY_RECOGNITION_INTERVAL));
+        bindPreference(findPreference(KEY_ACTIVITY_RECOGNITION_TOLERANCE));
+        bindPreference(findPreference(KEY_LOCATION_UPDATES_INTERVAL));
     }
 
     private void bindPreference(Preference preference) {
-        preference.setOnPreferenceChangeListener(mListener);
-        mListener.onPreferenceChange(preference, PreferenceManager
+        preference.setOnPreferenceChangeListener(mPreferencesListener);
+        mPreferencesListener.onPreferenceChange(preference, PreferenceManager
                 .getDefaultSharedPreferences(preference.getContext())
                 .getString(preference.getKey(), ""));
     }
@@ -68,11 +77,11 @@ public class SettingsActivity extends PreferenceActivity  {
     private class PreferenceChangeListener implements Preference.OnPreferenceChangeListener {
 
         private ActivityRecognitionController mActivityRecognitionController;
-        private LocationController mLocationController;
+        private LocationUpdatesController mLocationUpdatesController;
 
         public PreferenceChangeListener(Context context) {
             mActivityRecognitionController = new ActivityRecognitionController(context);
-            mLocationController = new LocationController(context);
+            mLocationUpdatesController = new LocationUpdatesController(context);
         }
 
         @Override
@@ -81,11 +90,12 @@ public class SettingsActivity extends PreferenceActivity  {
             int index = listPreference.findIndexOfValue(value.toString());
             preference.setSummary(index >= 0 ? listPreference.getEntries()[index] : null);
             String key = listPreference.getKey();
-            if (Constants.KEY_RECOGNITION_INTERVAL.equals(key) || Constants.KEY_RECOGNITION_TOLERANCE.equals(key)) {
+            if (KEY_ACTIVITY_RECOGNITION_INTERVAL.equals(key) ||
+                    KEY_ACTIVITY_RECOGNITION_TOLERANCE.equals(key)) {
                 mActivityRecognitionController.restartActivityRecognitionUpdates();
-            } else if (Constants.KEY_LOCATION_UPDATES_INTERVAL.equals(key)) {
-                if (mLocationController.isLocationUpdatesStarted()) {
-                    mLocationController.restartLocationUpdates();
+            } else if (KEY_LOCATION_UPDATES_INTERVAL.equals(key)) {
+                if (mPreferenceUtils.isLocationUpdatesStarted()) {
+                    mLocationUpdatesController.restartLocationUpdates();
                 }
             }
             return true;

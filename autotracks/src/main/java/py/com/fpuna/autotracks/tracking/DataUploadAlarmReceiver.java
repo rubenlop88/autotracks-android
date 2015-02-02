@@ -5,11 +5,8 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
-import com.commonsware.cwac.wakeful.WakefulIntentService;
-
-public class AlarmReceiver extends BroadcastReceiver {
+public class DataUploadAlarmReceiver extends BroadcastReceiver {
 
     public static boolean isAlarmSetUp(Context context) {
         return getPendingIntent(context, PendingIntent.FLAG_NO_CREATE) != null;
@@ -24,16 +21,16 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     private static PendingIntent getPendingIntent(Context context, int flags) {
-        Intent intent = new Intent(context, AlarmReceiver.class);
+        Intent intent = new Intent(context, DataUploadAlarmReceiver.class);
         return PendingIntent.getBroadcast(context, 0, intent, flags);
     }
 
-    public AlarmReceiver() {
+    public DataUploadAlarmReceiver() {
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        AlarmIntentService.startService(context);
+        DataUploadIntentService.startService(context);
     }
 
 }

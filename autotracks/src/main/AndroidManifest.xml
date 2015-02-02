@@ -25,17 +25,17 @@
             android:value="@integer/google_play_services_version" />
 
         <service
-            android:name=".tracking.LocationService"
+            android:name=".tracking.LocationUpdatesService"
             android:exported="false" />
         <service
             android:name=".tracking.ActivityRecognitionService"
             android:exported="false" />
         <service
-            android:name=".tracking.AlarmIntentService"
+            android:name=".tracking.DataUploadIntentService"
             android:exported="false" />
 
         <receiver
-            android:name=".tracking.BootReceiver"
+            android:name=".receiver.BootReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -43,11 +43,11 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".tracking.AlarmReceiver"
+            android:name=".tracking.DataUploadAlarmReceiver"
             android:enabled="true"
             android:exported="true" />
         <receiver
-            android:name=".battery.BatteryReceiver"
+            android:name=".receiver.BatteryReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
