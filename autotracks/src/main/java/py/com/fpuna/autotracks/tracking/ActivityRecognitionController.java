@@ -18,7 +18,7 @@ public class ActivityRecognitionController implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
-    public static final String DEFAULT_INTERVAL = "15"; // 15 segundos
+    public static final String DEFAULT_INTERVAL = "30"; // 30 segundos
 
     private enum Operation {
         START, STOP, RESTART
