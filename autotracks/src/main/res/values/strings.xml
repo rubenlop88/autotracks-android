@@ -50,16 +50,16 @@
         velocidad promedio de la ruta de acuerdo al color:
     </string>
     <string name="info_leyendas_descripcion_verde">
-        Verde: 40 o más kilómetros por hora.
+        Verde: 30 o más kilómetros por hora.
     </string>
     <string name="info_leyendas_descripcion_amarillo">
-        Amarillo: entre 30 y 39 kilómetros por hora.
+        Amarillo: entre 20 y 29 kilómetros por hora.
     </string>
     <string name="info_leyendas_descripcion_naranja">
-        Naranja: entre 15 y 29 kilómetros por hora.
+        Naranja: entre 10 y 19 kilómetros por hora.
     </string>
     <string name="info_leyendas_descripcion_rojo">
-        Rojo: entre 0 y 14 kilómetros por hora.
+        Rojo: entre 0 y 9 kilómetros por hora.
     </string>
 
     <!-- Sobre el proyecto y los autores -->
