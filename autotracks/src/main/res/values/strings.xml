@@ -95,11 +95,13 @@
     <string-array name="pref_activity_recognition_interval_list_titles">
         <item>15 segundos</item>
         <item>30 segundos</item>
+        <item>45 segundos</item>
         <item>60 segundos</item>
     </string-array>
     <string-array name="pref_activity_recognition_interval_list_values">
         <item>15</item>
         <item>30</item>
+        <item>45</item>
         <item>60</item>
     </string-array>
 
