@@ -27,30 +27,17 @@ public class LocationUpdatesController implements
         START, STOP, RESTART
     }
 
-<<<<<<< HEAD:autotracks/src/main/java/py/com/fpuna/autotracks/tracking/LocationUpdatesController.java
-=======
-    private static final String DEFAULT_INTERVAL = "60"; // 60 segundos
-
->>>>>>> 6b2f0c5f43300dafe62d3663cc58971153213c7a:autotracks/src/main/java/py/com/fpuna/autotracks/tracking/LocationController.java
     private Context mContext;
     private PreferenceUtils mPreferenceUtils;
     private FusedLocationProviderApi mClient;
     private GoogleApiClient mGClient;
     private Operation mOperation;
 
-<<<<<<< HEAD:autotracks/src/main/java/py/com/fpuna/autotracks/tracking/LocationUpdatesController.java
     public LocationUpdatesController(Context context) {
         this.mContext = context.getApplicationContext();
         this.mPreferenceUtils = new PreferenceUtils(mContext);
         this.mGClient = new GoogleApiClient.Builder(mContext)
-=======
-    public LocationController(Context context) {
-        this.mPreferences = context.getSharedPreferences("py.com.fpuna.autotracks_preferences",
-                Context.MODE_PRIVATE);
-        this.mContext = context.getApplicationContext();
-        this.mGClient = new GoogleApiClient.Builder(this.mContext)
-                .addApi(LocationServices.API).addConnectionCallbacks(this)
->>>>>>> 6b2f0c5f43300dafe62d3663cc58971153213c7a:autotracks/src/main/java/py/com/fpuna/autotracks/tracking/LocationController.java
+                .addApi(LocationServices.API)
                 .addOnConnectionFailedListener(this)
                 .addConnectionCallbacks(this)
                 .addApi(LocationServices.API)
@@ -117,14 +104,6 @@ public class LocationUpdatesController implements
                 .setInterval(interval);
     }
 
-<<<<<<< HEAD:autotracks/src/main/java/py/com/fpuna/autotracks/tracking/LocationUpdatesController.java
-=======
-    private long getIntervalMillis() {
-        String interval = mPreferences.getString(Constants.KEY_LOCATION_UPDATES_INTERVAL, DEFAULT_INTERVAL);
-        return Long.valueOf(interval) * 1000;
-    }
-
->>>>>>> 6b2f0c5f43300dafe62d3663cc58971153213c7a:autotracks/src/main/java/py/com/fpuna/autotracks/tracking/LocationController.java
     private void startNewTrack() {
         Ruta ruta = new Ruta(System.currentTimeMillis());
         Uri uri = cupboard().withContext(mContext).put(Rutas.CONTENT_URI, ruta);

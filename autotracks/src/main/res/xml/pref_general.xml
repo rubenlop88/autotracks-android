@@ -3,7 +3,7 @@
     <ListPreference
         android:key="activity_recognition_interval"
         android:title="@string/pref_title_activity_recognition_interval"
-        android:defaultValue="15"
+        android:defaultValue="30"
         android:entries="@array/pref_activity_recognition_interval_list_titles"
         android:entryValues="@array/pref_activity_recognition_interval_list_values"
         android:negativeButtonText="@null"
