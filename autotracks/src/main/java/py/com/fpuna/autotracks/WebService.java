@@ -12,7 +12,7 @@ import retrofit.http.POST;
 
 public class WebService {
 
-    public static final String ENDPOINT = "http://209.208.108.214:8080/autotracks/resources/";
+    public static final String ENDPOINT = "http://162.243.25.166:8080/autotracks/resources/";
 
     public static RutasResource getRutasResource() {
         Gson gson = new GsonBuilder()
@@ -31,7 +31,7 @@ public class WebService {
     public interface RutasResource {
 
         @POST("/rutas")
-        public Resultado guardarRuta(@Body Ruta ruta);
+        Resultado guardarRuta(@Body Ruta ruta);
 
     }
 

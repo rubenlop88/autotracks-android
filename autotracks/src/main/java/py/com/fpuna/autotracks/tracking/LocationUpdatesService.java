@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.location.Location;
 
 import com.google.android.gms.location.FusedLocationProviderApi;
+import com.google.android.gms.location.LocationResult;
 
 import py.com.fpuna.autotracks.model.Localizacion;
 import py.com.fpuna.autotracks.provider.AutotracksContract.Localizaciones;
@@ -37,8 +38,9 @@ public class LocationUpdatesService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (mPreferenceUtils.isActivityUpdatesStarted()) {
             if (mPreferenceUtils.isLocationUpdatesStarted()) {
-                Location location = intent.getExtras().getParcelable(FusedLocationProviderApi.KEY_LOCATION_CHANGED);
-                if (location != null) {
+                if (LocationResult.hasResult(intent)) {
+                    LocationResult locationResult = LocationResult.extractResult(intent);
+                    Location location = locationResult.getLastLocation();
                     saveLocation(location);
                 }
             }
@@ -46,13 +48,13 @@ public class LocationUpdatesService extends IntentService {
     }
 
     private void saveLocation(Location location) {
-        String rutaId = mPreferenceUtils.getCurrentTrackId();
-        if (rutaId != null) {
-            String lastRutaId = mPreferenceUtils.getLastTrackId();
-            if (lastRutaId == null || !rutaId.equals(lastRutaId) || validateLocation(location)) {
-                Localizacion localizacion = new Localizacion(location, Long.valueOf(rutaId));
+        String trackId = mPreferenceUtils.getCurrentTrackId();
+        if (trackId != null) {
+            String lastTrackId = mPreferenceUtils.getLastTrackId();
+            if (lastTrackId == null || !trackId.equals(lastTrackId) || validateLocation(location)) {
+                Localizacion localizacion = new Localizacion(location, Long.valueOf(trackId));
                 cupboard().withContext(mContext).put(Localizaciones.CONTENT_URI, localizacion);
-                mPreferenceUtils.saveLastLocation(location, rutaId);
+                mPreferenceUtils.saveLastLocation(location, trackId);
             }
         }
     }

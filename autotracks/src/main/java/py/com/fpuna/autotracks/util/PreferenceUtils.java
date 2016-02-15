@@ -209,22 +209,22 @@ public class PreferenceUtils {
                 .commit();
     }
 
-    /**
-     * Indica si el nivel de la bateria es aceptable.
-     *
-     * @return <code>true</code> si el nivel de la bateria es aceptable.
-     */
-    public boolean isBatteryLevelOk() {
-        return !mPreferences.getBoolean(KEY_BATTERY_LEVEL_LOW, false);
-    }
-
-    /**
-     * Guarda el estado del nivel de bateria.
-     *
-     * @param ok estado actual del nivel de bateria.
-     */
-    public void setBatteryLevelOk(boolean ok) {
-        mPreferences.edit().putBoolean(KEY_BATTERY_LEVEL_LOW, !ok).apply();
-    }
+//    /**
+//     * Indica si el nivel de la bateria es aceptable.
+//     *
+//     * @return <code>true</code> si el nivel de la bateria es aceptable.
+//     */
+//    public boolean isBatteryLevelOk() {
+//        return !mPreferences.getBoolean(KEY_BATTERY_LEVEL_LOW, false);
+//    }
+//
+//    /**
+//     * Guarda el estado del nivel de bateria.
+//     *
+//     * @param ok estado actual del nivel de bateria.
+//     */
+//    public void setBatteryLevelOk(boolean ok) {
+//        mPreferences.edit().putBoolean(KEY_BATTERY_LEVEL_LOW, !ok).apply();
+//    }
 
 }

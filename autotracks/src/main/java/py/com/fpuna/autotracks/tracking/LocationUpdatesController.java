@@ -1,11 +1,15 @@
 package py.com.fpuna.autotracks.tracking;
 
+import android.Manifest;
 import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -47,6 +51,9 @@ public class LocationUpdatesController implements
 
     @Override
     public void onConnected(Bundle bundle) {
+        if (!checkPermission()) {
+            return;
+        }
         switch (mOperation) {
             case RESTART:
                 if (mPreferenceUtils.isLocationUpdatesStarted()) {
@@ -73,7 +80,7 @@ public class LocationUpdatesController implements
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
     }
 
     public void restartLocationUpdates() {
@@ -116,6 +123,12 @@ public class LocationUpdatesController implements
         values.put(Rutas.FIN, System.currentTimeMillis());
         cupboard().withContext(mContext).update(Rutas.CONTENT_URI, values);
         mPreferenceUtils.setCurrentTrackId(null);
+    }
+
+    private boolean checkPermission() {
+        return ActivityCompat.checkSelfPermission(mContext,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+
     }
 
 }

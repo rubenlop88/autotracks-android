@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -17,7 +18,7 @@ import com.astuetz.PagerSlidingTabStrip;
 import py.com.fpuna.autotracks.fragment.AuthorsFragment;
 import py.com.fpuna.autotracks.fragment.InformationFragment;
 
-public class AboutActivity extends ActionBarActivity implements ActionBar.TabListener {
+public class AboutActivity extends AppCompatActivity implements ActionBar.TabListener {
 
     private PagerSlidingTabStrip mPagerSlidingTabStrip;
     private SectionsPagerAdapter mSectionsPagerAdapter;

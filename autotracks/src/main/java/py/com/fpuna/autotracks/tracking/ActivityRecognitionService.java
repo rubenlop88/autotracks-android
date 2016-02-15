@@ -12,6 +12,8 @@ import py.com.fpuna.autotracks.util.PreferenceUtils;
 import static com.google.android.gms.location.DetectedActivity.IN_VEHICLE;
 import static com.google.android.gms.location.DetectedActivity.ON_FOOT;
 import static com.google.android.gms.location.DetectedActivity.RUNNING;
+import static com.google.android.gms.location.DetectedActivity.STILL;
+import static com.google.android.gms.location.DetectedActivity.TILTING;
 import static com.google.android.gms.location.DetectedActivity.WALKING;
 
 /**
@@ -80,11 +82,7 @@ public class ActivityRecognitionService extends IntentService {
             long tolerance = mPreferenceUtils.getActivityRecognitionToleranceMillis();
             long lastDetectionTime = mPreferenceUtils.getDetectionTimeMillis();
             long elapsedTime = currentTime - lastDetectionTime;
-            if (elapsedTime > tolerance) {
-                return false;
-            } else {
-                return true;
-            }
+            return elapsedTime <= tolerance;
         }
 
         return false;

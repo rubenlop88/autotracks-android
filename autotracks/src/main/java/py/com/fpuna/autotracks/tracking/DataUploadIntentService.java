@@ -27,10 +27,7 @@ public class DataUploadIntentService extends WakefulIntentService {
     private static String TAG = DataUploadIntentService.class.getSimpleName();
 
     public static void startService(Context context) {
-        PreferenceUtils mPreferenceUtils = new PreferenceUtils(context);
-        if (mPreferenceUtils.isBatteryLevelOk()) {
-            WakefulIntentService.sendWakefulWork(context, DataUploadIntentService.class);
-        }
+        WakefulIntentService.sendWakefulWork(context, DataUploadIntentService.class);
     }
 
     public DataUploadIntentService() {
@@ -44,7 +41,7 @@ public class DataUploadIntentService extends WakefulIntentService {
 
         long rutaId = -1;
         Ruta ruta = null;
-        List<Ruta> rutas = new ArrayList<Ruta>();
+        List<Ruta> rutas = new ArrayList<>();
 
         for (Localizacion localizacion : getLocalizaciones()) {
             if (localizacion.getRuta() != rutaId) {
@@ -53,12 +50,13 @@ public class DataUploadIntentService extends WakefulIntentService {
                 ruta.setLocalizaciones(new ArrayList<Localizacion>());
                 rutas.add(ruta);
             }
-            ruta.getLocalizaciones().add(localizacion);
+            if (ruta!= null) {
+                ruta.getLocalizaciones().add(localizacion);
+            }
         }
 
         try {
             WebService.RutasResource rutasResource = WebService.getRutasResource();
-
             for (Ruta r : rutas) {
                 if (r.getLocalizaciones().size() > 5) { // no enviamos rutas con menos de 5 localizaciones
                     r.setLocalizaciones(getLocalizacionesNoEnviadas(r)); // enviamos solo lacalizaciones no enviadas
@@ -79,7 +77,7 @@ public class DataUploadIntentService extends WakefulIntentService {
      * Obtiene las localizaciones no enviadas de la lista de localizaciones de la ruta.
      */
     private List<Localizacion> getLocalizacionesNoEnviadas(Ruta ruta) {
-        List<Localizacion> localizacionesNoEnviadas = new ArrayList<Localizacion>();
+        List<Localizacion> localizacionesNoEnviadas = new ArrayList<>();
         for (Localizacion l : ruta.getLocalizaciones()) {
             if (Localizacion.Enviado.FALSE.equals(l.getEnviado())) {
                 localizacionesNoEnviadas.add(l);
@@ -112,8 +110,7 @@ public class DataUploadIntentService extends WakefulIntentService {
      */
     private Ruta getRuta(long rutaId) {
         Uri uri = Rutas.buildUri(String.valueOf(rutaId));
-        Ruta ruta = cupboard().withContext(getApplicationContext()).get(uri, Ruta.class);
-        return ruta;
+        return cupboard().withContext(getApplicationContext()).get(uri, Ruta.class);
     }
 
     /**

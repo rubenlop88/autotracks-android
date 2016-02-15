@@ -2,6 +2,7 @@ package py.com.fpuna.autotracks;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +19,7 @@ import py.com.fpuna.autotracks.provider.AutotracksContract;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
-public class RutasActivity extends ActionBarActivity {
+public class RutasActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
