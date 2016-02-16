@@ -25,7 +25,7 @@ public class PreferenceUtils {
     private static final String KEY_LAST_LOCATION_LATITUDE = "key_last_location_latitude";
     private static final String KEY_LAST_LOCATION_LONGITUDE = "key_last_location_longitude";
     private static final String KEY_LAST_LOCATION_TIME = "key_las_location_time";
-    private static final String KEY_BATTERY_LEVEL_LOW = "battery_level_low";
+    private static final String KEY_LAST_ACTIVITY_TIME = "key_las_activity_time";
 
     private SharedPreferences mPreferences;
 
@@ -209,22 +209,18 @@ public class PreferenceUtils {
                 .commit();
     }
 
-//    /**
-//     * Indica si el nivel de la bateria es aceptable.
-//     *
-//     * @return <code>true</code> si el nivel de la bateria es aceptable.
-//     */
-//    public boolean isBatteryLevelOk() {
-//        return !mPreferences.getBoolean(KEY_BATTERY_LEVEL_LOW, false);
-//    }
-//
-//    /**
-//     * Guarda el estado del nivel de bateria.
-//     *
-//     * @param ok estado actual del nivel de bateria.
-//     */
-//    public void setBatteryLevelOk(boolean ok) {
-//        mPreferences.edit().putBoolean(KEY_BATTERY_LEVEL_LOW, !ok).apply();
-//    }
+    /**
+     * Guarda el timestamp del ultimo reconocimiento de actividad
+     */
+    public void setLastActivityTime(long time) {
+        mPreferences.edit().putLong(KEY_LAST_ACTIVITY_TIME, time).commit();
+    }
+
+    /**
+     * Obtiene el timestamp del ultimo reconocimiento de actividad
+     */
+    public long getLastActivityTime() {
+        return mPreferences.getLong(KEY_LAST_ACTIVITY_TIME, -1);
+    }
 
 }

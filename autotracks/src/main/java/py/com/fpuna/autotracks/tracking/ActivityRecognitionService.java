@@ -40,6 +40,7 @@ public class ActivityRecognitionService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (mPreferenceUtils.isActivityUpdatesStarted()) {
             if (ActivityRecognitionResult.hasResult(intent)) {
+                mPreferenceUtils.setLastActivityTime(System.currentTimeMillis());
                 ActivityRecognitionResult result = ActivityRecognitionResult.extractResult(intent);
                 boolean moving = isMoving(result);
                 mPreferenceUtils.setMoving(moving);
@@ -73,7 +74,7 @@ public class ActivityRecognitionService extends IntentService {
             return false;
         }
 
-        if (type == IN_VEHICLE && confidence > 80) {
+        if (type == TILTING && confidence > 80) {
             mPreferenceUtils.setDetectionTimeMillis(currentTime);
             return true;
         }

@@ -22,6 +22,7 @@ public class LocationUpdatesService extends IntentService {
 
     private Context mContext;
     private PreferenceUtils mPreferenceUtils;
+    private LocationUpdatesController mLocationUpdatesController;
 
     public LocationUpdatesService() {
         super("LocationUpdatesService");
@@ -32,16 +33,24 @@ public class LocationUpdatesService extends IntentService {
         super.onCreate();
         mContext = getApplicationContext();
         mPreferenceUtils = new PreferenceUtils(mContext);
+        mLocationUpdatesController = new LocationUpdatesController(mContext);
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        if (mPreferenceUtils.isActivityUpdatesStarted()) {
+         if (mPreferenceUtils.isActivityUpdatesStarted()) {
             if (mPreferenceUtils.isLocationUpdatesStarted()) {
                 if (LocationResult.hasResult(intent)) {
                     LocationResult locationResult = LocationResult.extractResult(intent);
                     Location location = locationResult.getLastLocation();
                     saveLocation(location);
+                }
+                long currentTime = System.currentTimeMillis();
+                long tolerance = mPreferenceUtils.getActivityRecognitionToleranceMillis();
+                long lastActivityTime = mPreferenceUtils.getLastActivityTime();
+                long elapsedTime = currentTime - lastActivityTime;
+                if (elapsedTime > tolerance) {
+                    mLocationUpdatesController.stopLocationUpdates();
                 }
             }
         }
