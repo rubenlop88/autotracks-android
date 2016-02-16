@@ -70,11 +70,11 @@ public class ActivityRecognitionService extends IntentService {
         int confidence = mostProbableActivity.getConfidence();
         int type = mostProbableActivity.getType();
 
-        if ((type == ON_FOOT || type == RUNNING || type == WALKING) && confidence > 80) {
+        if ((type == ON_FOOT || type == RUNNING || type == WALKING) && confidence > 75) {
             return false;
         }
 
-        if (type == TILTING && confidence > 80) {
+        if (type == IN_VEHICLE && confidence > 75) {
             mPreferenceUtils.setDetectionTimeMillis(currentTime);
             return true;
         }
