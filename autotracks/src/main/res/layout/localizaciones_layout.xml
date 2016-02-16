@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="80dp">
+
+    <!-- icon -->
+    <ImageView
+        android:id="@+id/localizaciones_icon"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="1dp"
+        android:contentDescription="icon"
+        android:src="@drawable/ic_launcher"
+        />
+
+    <!-- title -->
+    <TextView
+        android:id="@+id/localizaciones_posicion"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/localizaciones_icon"
+        android:layout_alignBaseline="@+id/localizaciones_icon"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:textSize="16dp" />
+
+    <!-- title -->
+    <TextView
+        android:id="@+id/localizaciones_fecha"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/localizaciones_icon"
+        android:layout_below="@+id/localizaciones_posicion"
+        android:layout_alignBaseline="@+id/localizaciones_icon"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:textSize="16dp" />
+
+</RelativeLayout>

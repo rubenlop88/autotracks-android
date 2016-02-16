@@ -1,5 +1,7 @@
 package py.com.fpuna.autotracks.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +13,9 @@ import android.support.v7.widget.RecyclerView;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import py.com.fpuna.autotracks.LocalizacionesActivity;
 import py.com.fpuna.autotracks.R;
+import py.com.fpuna.autotracks.RutasActivity;
 import py.com.fpuna.autotracks.model.Ruta;
 
 /**
@@ -20,11 +24,12 @@ import py.com.fpuna.autotracks.model.Ruta;
 public class RutasAdapter extends RecyclerView.Adapter<RutasAdapter.ViewHolder> {
     private Ruta[] mDataset;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+    private RutasActivity mContext;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView inicioTextView;
         public ImageView imgViewIcon;
@@ -35,18 +40,27 @@ public class RutasAdapter extends RecyclerView.Adapter<RutasAdapter.ViewHolder> 
             inicioTextView = (TextView) rutasLayoutView.findViewById(R.id.rutas_inicio);
             finTextView = (TextView) rutasLayoutView.findViewById(R.id.rutas_fin);
             imgViewIcon = (ImageView) rutasLayoutView.findViewById(R.id.rutas_icon);
+            rutasLayoutView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, LocalizacionesActivity.class);
+                    Long id = mDataset[getAdapterPosition()].getId();
+                    intent.putExtra("track_id", id);
+                    mContext.startActivity(intent);
+                }
+            });
         }
     }
 
-    public RutasAdapter(Ruta[] rutas) {
+    public RutasAdapter(Ruta[] rutas, RutasActivity context) {
         this.mDataset = rutas;
+        this.mContext = context;
     }
 
     @Override
     public RutasAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View rutasLayout = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.rutas_layout, null);
-
         ViewHolder viewHolder = new ViewHolder((RelativeLayout) rutasLayout);
         return viewHolder;
     }
