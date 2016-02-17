@@ -25,7 +25,7 @@
 
         var dibujarTraficoCalor = function() {
             eliminarTrayectos();
-            $.get('http://209.208.108.214:8080/autotracks/resources/rutas/trafico', function(data) {
+            $.get('http://162.243.25.166:8080/topa-transito/resources/rutas/trafico', function(data) {
                 var polyline;
                 var color;
                 for (var i = 0; i < data.length; i++) {
@@ -55,7 +55,7 @@
          */
         var dibujarTraficoVelocidad = function() {
             eliminarTrayectos();
-            $.get('http://209.208.108.214:8080/autotracks/resources/rutas/trafico', function(data) {
+            $.get('http://162.243.25.166:8080/topa-transito/resources/rutas/trafico', function(data) {
                 var polyline;
                 var color;
                 for (var i = 0; i < data.length; i++) {
